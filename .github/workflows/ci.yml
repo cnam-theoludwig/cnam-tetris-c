@@ -1,0 +1,28 @@
+name: "ci"
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-editorconfig-checker:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: "actions/checkout@v4.2.2"
+      - uses: "editorconfig-checker/action-editorconfig-checker@main"
+      - run: "editorconfig-checker"
+
+  ci:
+    runs-on: "ubuntu-latest"
+    container: "theoludwig/gcc-make-doxygen-ubuntu:latest"
+
+    steps:
+      - uses: "actions/checkout@v4.2.2"
+
+      - run: "make"
+
+      - run: "make lint"
+
+      - run: "make clean"
