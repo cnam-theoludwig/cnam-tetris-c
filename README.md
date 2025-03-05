@@ -18,7 +18,7 @@ Développement d'une reproduction du jeu [Tetris](https://fr.wikipedia.org/wiki/
 - [GNU gcc](https://gcc.gnu.org/)
 - [GNU make](https://www.gnu.org/software/make/)
 - [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html)
-- [SDL 2](https://www.libsdl.org/) v2.32.2 (automatiquement installé avec `make`)
+- [SDL](https://www.libsdl.org/) v2.32.2 (automatiquement installé avec `make`)
 - [libcproject](https://github.com/theoludwig/libcproject) v5.1.0 (automatiquement installé avec `make`)
 
 ## Utilisation
