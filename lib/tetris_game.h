@@ -47,4 +47,8 @@ bool tetris_step_down_last_tetrimino(struct Tetris* tetris);
 
 struct Tetris* tetris_copy(struct Tetris* tetris);
 
+void tetris_destroy_line(struct Tetris* tetris);
+
+void tetris_destroy_single_line(struct Tetris* tetris, int row);
+
 #endif
