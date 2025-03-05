@@ -5,12 +5,16 @@ int tetris_game() {
   struct Tetris* tetris = tetris_init();
 
   tetris_add_tetrimino(tetris, TETRIMINO_SQUARE);
-  tetris_step_down_last_tetrimino(tetris);
-  tetris_step_down_last_tetrimino(tetris);
-  tetris_step_down_last_tetrimino(tetris);
-  tetris_add_tetrimino(tetris, TETRIMINO_SQUARE);
+  while (tetris_step_down_last_tetrimino(tetris)) {
+    tetris_print(tetris);
+    sleep(1);
+  }
 
-  tetris_print(tetris);
+  tetris_add_tetrimino(tetris, TETRIMINO_LINE);
+  while (tetris_step_down_last_tetrimino(tetris)) {
+    tetris_print(tetris);
+    sleep(1);
+  }
 
   tetris_free(tetris);
   return EXIT_SUCCESS;
@@ -58,6 +62,7 @@ void tetris_print(struct Tetris* tetris) {
     }
     printf("\n");
   }
+  printf("\n");
 }
 
 void tetris_free(struct Tetris* tetris) {
@@ -122,18 +127,37 @@ struct Tetris* tetris_copy(struct Tetris* tetris) {
 // void tetris_add_tetrimino_random(struct Tetris* tetris) {
 // }
 
-void tetris_step_down_last_tetrimino(struct Tetris* tetris) {
-  for (int row = GRID_HEIGHT - 2; row >= 0; row--) {
+bool tetris_step_down_last_tetrimino(struct Tetris* tetris) {
+  bool can_move = true;
+
+  for (int row = GRID_HEIGHT - 1; row >= 0; row--) {
     for (int column = GRID_WIDTH - 1; column >= 0; column--) {
       if (tetris->grid[row][column]->occurence == tetris->last_occurence) {
-        if (tetris->grid[row + 1][column]->type == TETRIMINO_EMPTY) {
-          tetris->grid[row + 1][column]->type = tetris->grid[row][column]->type;
-          tetris->grid[row + 1][column]->occurence = tetris->grid[row][column]->occurence;
-
-          tetris->grid[row][column]->type = TETRIMINO_EMPTY;
-          tetris->grid[row][column]->occurence = 0;
+        if (row + 1 >= GRID_HEIGHT ||
+            (tetris->grid[row + 1][column]->type != TETRIMINO_EMPTY &&
+             tetris->grid[row + 1][column]->occurence != tetris->last_occurence)) {
+          can_move = false;
+          break;
         }
       }
     }
   }
+
+  if (!can_move) {
+    return false;
+  }
+
+  for (int row = GRID_HEIGHT - 1; row >= 0; row--) {
+    for (int column = GRID_WIDTH - 1; column >= 0; column--) {
+      if (tetris->grid[row][column]->occurence == tetris->last_occurence) {
+        tetris->grid[row + 1][column]->type = tetris->grid[row][column]->type;
+        tetris->grid[row + 1][column]->occurence = tetris->grid[row][column]->occurence;
+
+        tetris->grid[row][column]->type = TETRIMINO_EMPTY;
+        tetris->grid[row][column]->occurence = 0;
+      }
+    }
+  }
+
+  return true;
 }

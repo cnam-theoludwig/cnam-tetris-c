@@ -43,7 +43,7 @@ void tetris_add_tetrimino(struct Tetris* tetris, byte_t type);
 
 // void tetris_add_tetrimino_random(struct Tetris* tetris);
 
-void tetris_step_down_last_tetrimino(struct Tetris* tetris);
+bool tetris_step_down_last_tetrimino(struct Tetris* tetris);
 
 struct Tetris* tetris_copy(struct Tetris* tetris);
 
