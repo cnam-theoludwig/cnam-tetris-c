@@ -19,6 +19,7 @@
 #define TETRIMINO_Z 'Z'
 #define TETRIMINO_J 'J'
 #define TETRIMINO_S 'S'
+#define TETRIMINO_SIZE 4
 
 struct Tetris {
   struct Block*** grid;
@@ -43,8 +44,23 @@ void tetris_add_tetrimino(struct Tetris* tetris, byte_t type);
 
 // void tetris_add_tetrimino_random(struct Tetris* tetris);
 
+int tetris_can_tetrimino_step_down(struct Tetris* tetris) ;
+
 void tetris_step_down_last_tetrimino(struct Tetris* tetris);
 
 struct Tetris* tetris_copy(struct Tetris* tetris);
 
+void tetris_destroy_line(struct Tetris* tetris);
+
+void destroy_single_line(struct Tetris* tetris, int row);
+
+int get_tetrimino_blocks(struct Tetris* tetris, int blocks[TETRIMINO_SIZE][2], int *tetrimino_type) ;
+
+void compute_rotation(int blocks[TETRIMINO_SIZE][2], int new_positions[TETRIMINO_SIZE][2]);
+
+int is_rotation_valid(struct Tetris* tetris, int new_positions[TETRIMINO_SIZE][2]);
+
+void apply_rotation(struct Tetris* tetris, int blocks[TETRIMINO_SIZE][2], int new_positions[TETRIMINO_SIZE][2], int tetrimino_type);
+
+void rotate_tetrimino_right(struct Tetris* tetris);
 #endif
