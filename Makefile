@@ -18,7 +18,7 @@ LIBCPROJECT_PATH = ${LIBCPROJECT_FOLDER}/build/libcproject.a
 LIBCPROJECT_LIB = -l:${LIBCPROJECT_PATH}
 
 SDL_REPO = https://github.com/libsdl-org/SDL.git
-SDL_VERSION = release-2.28.5
+SDL_VERSION = release-2.32.2
 SDL_FOLDER = ${DEPENDENCIES_FOLDER}/SDL
 SDL_BUILD_FOLDER = ${SDL_FOLDER}/build
 SDL_PATH = ${SDL_BUILD_FOLDER}/libSDL2.a
@@ -48,7 +48,7 @@ ${SDL_PATH}: ${DEPENDENCIES_FOLDER}
 	if [ ! -d "${SDL_FOLDER}" ]; then \
 		git clone ${SDL_REPO} ${SDL_FOLDER}; \
 		git -C ${SDL_FOLDER} checkout ${SDL_VERSION}; \
-		mkdir -p ${SDL_BUILD_FOLDER}; \
+		mkdir --parents ${SDL_BUILD_FOLDER}; \
 		cd ${SDL_BUILD_FOLDER} && cmake .. && make -j$(nproc); \
 	fi
 
@@ -82,3 +82,6 @@ clean:
 .PHONY: clean-deps
 clean-deps:
 	rm --recursive --force ${DEPENDENCIES_FOLDER}
+
+.PHONE: clean-all
+clean-all: clean clean-deps
