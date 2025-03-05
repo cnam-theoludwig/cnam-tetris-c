@@ -8,22 +8,9 @@ int tetris_game() {
   tetris_step_down_last_tetrimino(tetris);
   tetris_step_down_last_tetrimino(tetris);
   tetris_step_down_last_tetrimino(tetris);
-  tetris_print(tetris);
-  printf("-------------\n");
-  tetris_add_tetrimino(tetris, TETRIMINO_LINE);
-  tetris_step_down_last_tetrimino(tetris);
-  tetris_step_down_last_tetrimino(tetris);
-  tetris_step_down_last_tetrimino(tetris);
-  tetris_step_down_last_tetrimino(tetris);
-  tetris_step_down_last_tetrimino(tetris);
-  tetris_step_down_last_tetrimino(tetris);
-  tetris_step_down_last_tetrimino(tetris);
-
-  tetris_step_down_last_tetrimino(tetris);
+  tetris_add_tetrimino(tetris, TETRIMINO_SQUARE);
 
   tetris_print(tetris);
-  printf("-------------\n");
-
 
   tetris_free(tetris);
   return EXIT_SUCCESS;
@@ -134,73 +121,19 @@ struct Tetris* tetris_copy(struct Tetris* tetris) {
 
 // void tetris_add_tetrimino_random(struct Tetris* tetris) {
 // }
-int tetris_can_tetrimino_step_down(struct Tetris* tetris) {
-  for (int row = GRID_HEIGHT - 2; row >= 0; row--) {
-      for (int column = GRID_WIDTH - 1; column >= 0; column--) {
-          if (tetris->grid[row][column]->occurence == tetris->last_occurence) {
-              // Vérifier si la case en dessous est hors de la grille ou occupée par un autre Tetrimino
-              if (row + 1 >= GRID_HEIGHT ||
-                  (tetris->grid[row + 1][column]->type != TETRIMINO_EMPTY &&
-                   tetris->grid[row + 1][column]->occurence != tetris->last_occurence)) {
-                  printf("Cannot Move\n");
-                  return 0;  // Collision détectée, le Tetrimino ne peut pas descendre
-              }
-          }
-      }
-  }
-  return 1;  // Le Tetrimino peut descendre
-}
 
 void tetris_step_down_last_tetrimino(struct Tetris* tetris) {
-  int can_move = tetris_can_tetrimino_step_down(tetris);
+  for (int row = GRID_HEIGHT - 2; row >= 0; row--) {
+    for (int column = GRID_WIDTH - 1; column >= 0; column--) {
+      if (tetris->grid[row][column]->occurence == tetris->last_occurence) {
+        if (tetris->grid[row + 1][column]->type == TETRIMINO_EMPTY) {
+          tetris->grid[row + 1][column]->type = tetris->grid[row][column]->type;
+          tetris->grid[row + 1][column]->occurence = tetris->grid[row][column]->occurence;
 
-  if (can_move) {
-      // Parcourir la grille de bas en haut pour éviter d’écraser des parties qui n'ont pas encore bougé
-      for (int row = GRID_HEIGHT - 2; row >= 0; row--) {
-        for (int column = GRID_WIDTH - 1; column >= 0; column--) {
-              if (tetris->grid[row][column]->occurence == tetris->last_occurence) {
-                  // Déplacer la cellule vers le bas
-                  tetris->grid[row + 1][column]->type = tetris->grid[row][column]->type;
-                  tetris->grid[row + 1][column]->occurence = tetris->grid[row][column]->occurence;
-
-                  // Supprimer l’ancienne position
-                  tetris->grid[row][column]->type = TETRIMINO_EMPTY;
-                  tetris->grid[row][column]->occurence = 0;
-              }
-          }
+          tetris->grid[row][column]->type = TETRIMINO_EMPTY;
+          tetris->grid[row][column]->occurence = 0;
+        }
       }
-  }
-}
-// 🛠 Fonction qui détruit UNE ligne et décale les autres vers le bas
-void destroy_single_line(struct Tetris* tetris, int row) {
-  printf("Destruction de la ligne %d\n", row);
-
-  for (int r = row; r > 0; r--) {
-      for (int column = 0; column < GRID_WIDTH; column++) {
-          tetris->grid[r][column]->type = tetris->grid[r - 1][column]->type;
-          tetris->grid[r][column]->occurence = tetris->grid[r - 1][column]->occurence;
-      }
-  }
-
-  for (int column = 0; column < GRID_WIDTH; column++) {
-      tetris->grid[0][column]->type = TETRIMINO_EMPTY;
-      tetris->grid[0][column]->occurence = 0;
-  }
-}
-
-void tetris_destroy_line(struct Tetris* tetris) {
-  for (int row = 0; row < GRID_HEIGHT; row++) {
-      int is_complete = 1;
-
-      for (int column = 0; column < GRID_WIDTH; column++) {
-          if (tetris->grid[row][column]->type == TETRIMINO_EMPTY) {
-              is_complete = 0;
-              break;
-          }
-      }
-      if (is_complete) {
-          destroy_single_line(tetris, row);
-          row--;
-      }
+    }
   }
 }
