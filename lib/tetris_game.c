@@ -4,17 +4,51 @@ int tetris_game() {
   printf("Tetris game\n");
   struct Tetris* tetris = tetris_init();
 
-  tetris_add_tetrimino(tetris, TETRIMINO_SQUARE);
-  while (tetris_step_down_last_tetrimino(tetris)) {
+  tetris_add_tetromino(tetris, tetromino_SQUARE);
+  while (tetris_last_tetromino_step_down(tetris)) {
     tetris_print(tetris);
-    sleep(1);
   }
 
-  tetris_add_tetrimino(tetris, TETRIMINO_LINE);
-  while (tetris_step_down_last_tetrimino(tetris)) {
+  tetris_add_tetromino(tetris, tetromino_SQUARE);
+  tetris_last_tetromino_step_left(tetris);
+  tetris_last_tetromino_step_left(tetris);
+  while (tetris_last_tetromino_step_down(tetris)) {
     tetris_print(tetris);
-    sleep(1);
   }
+
+  tetris_add_tetromino(tetris, tetromino_SQUARE);
+  tetris_last_tetromino_step_left(tetris);
+  tetris_last_tetromino_step_left(tetris);
+  tetris_last_tetromino_step_left(tetris);
+  tetris_last_tetromino_step_left(tetris);
+  while (tetris_last_tetromino_step_down(tetris)) {
+    tetris_print(tetris);
+  }
+
+  tetris_add_tetromino(tetris, tetromino_SQUARE);
+  tetris_last_tetromino_step_right(tetris);
+  tetris_last_tetromino_step_right(tetris);
+  while (tetris_last_tetromino_step_down(tetris)) {
+    tetris_print(tetris);
+  }
+
+  tetris_add_tetromino(tetris, tetromino_SQUARE);
+  tetris_last_tetromino_step_right(tetris);
+  tetris_last_tetromino_step_right(tetris);
+  tetris_last_tetromino_step_right(tetris);
+  tetris_last_tetromino_step_right(tetris);
+  while (tetris_last_tetromino_step_down(tetris)) {
+    tetris_print(tetris);
+  }
+
+  tetris_destroy_line(tetris);
+  tetris_print(tetris);
+
+  // tetris_add_tetromino(tetris, tetromino_LINE);
+  // while (tetris_last_tetromino_step_down(tetris)) {
+  //   tetris_print(tetris);
+  //   sleep(1);
+  // }
 
   tetris_free(tetris);
   return EXIT_SUCCESS;
@@ -46,7 +80,7 @@ struct Tetris* tetris_init() {
         perror("Error (tetris_init)");
         exit(EXIT_FAILURE);
       }
-      block->type = TETRIMINO_EMPTY;
+      block->type = tetromino_EMPTY;
       block->occurence = 0;
       tetris->grid[row][column] = block;
     }
@@ -76,13 +110,13 @@ void tetris_free(struct Tetris* tetris) {
   free(tetris);
 }
 
-void tetris_add_tetrimino(struct Tetris* tetris, byte_t type) {
+void tetris_add_tetromino(struct Tetris* tetris, byte_t type) {
   size_t row = 0;
   size_t column = GRID_WIDTH / 2;
   tetris->last_occurence += 1;
 
   switch (type) {
-    case TETRIMINO_SQUARE:
+    case tetromino_SQUARE:
       tetris->grid[row][column - 1]->type = type;
       tetris->grid[row][column - 1]->occurence = tetris->last_occurence;
 
@@ -95,7 +129,7 @@ void tetris_add_tetrimino(struct Tetris* tetris, byte_t type) {
       tetris->grid[row + 1][column]->type = type;
       tetris->grid[row + 1][column]->occurence = tetris->last_occurence;
       break;
-    case TETRIMINO_LINE:
+    case tetromino_LINE:
       tetris->grid[row][column - 2]->type = type;
       tetris->grid[row][column - 2]->occurence = tetris->last_occurence;
 
@@ -124,7 +158,7 @@ struct Tetris* tetris_copy(struct Tetris* tetris) {
   return copy_tetris;
 }
 
-// void tetris_add_tetrimino_random(struct Tetris* tetris) {
+// void tetris_add_tetromino_random(struct Tetris* tetris) {
 // }
 
 void tetris_destroy_single_line(struct Tetris* tetris, int row) {
@@ -136,7 +170,7 @@ void tetris_destroy_single_line(struct Tetris* tetris, int row) {
   }
 
   for (int column = 0; column < GRID_WIDTH; column++) {
-    tetris->grid[0][column]->type = TETRIMINO_EMPTY;
+    tetris->grid[0][column]->type = tetromino_EMPTY;
     tetris->grid[0][column]->occurence = 0;
   }
 }
@@ -146,7 +180,7 @@ void tetris_destroy_line(struct Tetris* tetris) {
     int is_complete = 1;
 
     for (int column = 0; column < GRID_WIDTH; column++) {
-      if (tetris->grid[row][column]->type == TETRIMINO_EMPTY) {
+      if (tetris->grid[row][column]->type == tetromino_EMPTY) {
         is_complete = 0;
         break;
       }
@@ -158,13 +192,13 @@ void tetris_destroy_line(struct Tetris* tetris) {
   }
 }
 
-bool tetris_step_down_last_tetrimino(struct Tetris* tetris) {
+bool tetris_last_tetromino_step_down(struct Tetris* tetris) {
   bool can_move = true;
 
   for (int row = GRID_HEIGHT - 1; row >= 0; row--) {
     for (int column = GRID_WIDTH - 1; column >= 0; column--) {
       if (tetris->grid[row][column]->occurence == tetris->last_occurence) {
-        if (row + 1 >= GRID_HEIGHT || (tetris->grid[row + 1][column]->type != TETRIMINO_EMPTY && tetris->grid[row + 1][column]->occurence != tetris->last_occurence)) {
+        if (row + 1 >= GRID_HEIGHT || (tetris->grid[row + 1][column]->type != tetromino_EMPTY && tetris->grid[row + 1][column]->occurence != tetris->last_occurence)) {
           can_move = false;
           break;
         }
@@ -182,11 +216,75 @@ bool tetris_step_down_last_tetrimino(struct Tetris* tetris) {
         tetris->grid[row + 1][column]->type = tetris->grid[row][column]->type;
         tetris->grid[row + 1][column]->occurence = tetris->grid[row][column]->occurence;
 
-        tetris->grid[row][column]->type = TETRIMINO_EMPTY;
+        tetris->grid[row][column]->type = tetromino_EMPTY;
         tetris->grid[row][column]->occurence = 0;
       }
     }
   }
 
   return true;
+}
+
+void tetris_last_tetromino_step_left(struct Tetris* tetris) {
+  bool is_moving = false;
+  struct Tetris* copy_tetris = tetris_copy(tetris);
+
+  for (int row = 0; row < GRID_HEIGHT; row++) {
+    for (int column = 0; column < GRID_WIDTH; column++) {
+      if (copy_tetris->grid[row][column]->occurence == copy_tetris->last_occurence) {
+        if (column - 1 >= 0 && copy_tetris->grid[row][column - 1]->type == tetromino_EMPTY) {
+          is_moving = true;
+          copy_tetris->grid[row][column - 1]->type = copy_tetris->grid[row][column]->type;
+          copy_tetris->grid[row][column - 1]->occurence = copy_tetris->grid[row][column]->occurence;
+
+          copy_tetris->grid[row][column]->type = tetromino_EMPTY;
+          copy_tetris->grid[row][column]->occurence = 0;
+        } else if (is_moving) {
+          tetris_free(copy_tetris);
+          return;
+        }
+      }
+    }
+  }
+
+  for (size_t row = 0; row < GRID_HEIGHT; row++) {
+    for (size_t column = 0; column < GRID_WIDTH; column++) {
+      tetris->grid[row][column]->type = copy_tetris->grid[row][column]->type;
+      tetris->grid[row][column]->occurence = copy_tetris->grid[row][column]->occurence;
+    }
+  }
+
+  tetris_free(copy_tetris);
+}
+
+void tetris_last_tetromino_step_right(struct Tetris* tetris) {
+  bool is_moving = false;
+  struct Tetris* copy_tetris = tetris_copy(tetris);
+
+  for (int row = GRID_HEIGHT - 1; row >= 0; row--) {
+    for (int column = GRID_WIDTH - 1; column >= 0; column--) {
+      if (copy_tetris->grid[row][column]->occurence == copy_tetris->last_occurence) {
+        if (GRID_WIDTH > column + 1 && copy_tetris->grid[row][column + 1]->type == tetromino_EMPTY) {
+          is_moving = true;
+          copy_tetris->grid[row][column + 1]->type = copy_tetris->grid[row][column]->type;
+          copy_tetris->grid[row][column + 1]->occurence = copy_tetris->grid[row][column]->occurence;
+
+          copy_tetris->grid[row][column]->type = tetromino_EMPTY;
+          copy_tetris->grid[row][column]->occurence = 0;
+        } else if (is_moving) {
+          tetris_free(copy_tetris);
+          return;
+        }
+      }
+    }
+  }
+
+  for (size_t row = 0; row < GRID_HEIGHT; row++) {
+    for (size_t column = 0; column < GRID_WIDTH; column++) {
+      tetris->grid[row][column]->type = copy_tetris->grid[row][column]->type;
+      tetris->grid[row][column]->occurence = copy_tetris->grid[row][column]->occurence;
+    }
+  }
+
+  tetris_free(copy_tetris);
 }
