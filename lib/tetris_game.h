@@ -11,14 +11,14 @@
 #define GRID_WIDTH 10
 #define GRID_HEIGHT 20
 
-#define TETRIMINO_EMPTY '0'
-#define TETRIMINO_LINE 'I'
-#define TETRIMINO_SQUARE 'O'
-#define TETRIMINO_T 'T'
-#define TETRIMINO_L 'L'
-#define TETRIMINO_Z 'Z'
-#define TETRIMINO_J 'J'
-#define TETRIMINO_S 'S'
+#define tetromino_EMPTY '0'
+#define tetromino_LINE 'I'
+#define tetromino_SQUARE 'O'
+#define tetromino_T 'T'
+#define tetromino_L 'L'
+#define tetromino_Z 'Z'
+#define tetromino_J 'J'
+#define tetromino_S 'S'
 
 struct Tetris {
   struct Block*** grid;
@@ -39,11 +39,15 @@ struct Tetris* tetris_init();
 
 void tetris_free(struct Tetris* tetris);
 
-void tetris_add_tetrimino(struct Tetris* tetris, byte_t type);
+void tetris_add_tetromino(struct Tetris* tetris, byte_t type);
 
-// void tetris_add_tetrimino_random(struct Tetris* tetris);
+// void tetris_add_tetromino_random(struct Tetris* tetris);
 
-bool tetris_step_down_last_tetrimino(struct Tetris* tetris);
+bool tetris_last_tetromino_step_down(struct Tetris* tetris);
+
+void tetris_last_tetromino_step_left(struct Tetris* tetris);
+
+void tetris_last_tetromino_step_right(struct Tetris* tetris);
 
 struct Tetris* tetris_copy(struct Tetris* tetris);
 
