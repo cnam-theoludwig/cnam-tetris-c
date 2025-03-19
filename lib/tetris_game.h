@@ -7,6 +7,7 @@
 
 #include "../dependencies/SDL/include/SDL.h"
 #include "../dependencies/libcproject/libcproject.h"
+#include "./random.h"
 
 #define GRID_WIDTH 10
 #define GRID_HEIGHT 20
@@ -41,7 +42,7 @@ void tetris_free(struct Tetris* tetris);
 
 void tetris_add_tetromino(struct Tetris* tetris, byte_t type);
 
-// void tetris_add_tetromino_random(struct Tetris* tetris);
+void tetris_add_tetromino_random(struct Tetris* tetris);
 
 bool tetris_last_tetromino_step_down(struct Tetris* tetris);
 

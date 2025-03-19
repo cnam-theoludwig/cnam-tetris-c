@@ -1,73 +1,76 @@
 #include "./tetris_game.h"
 
 int tetris_game() {
+  srand(time(NULL));
   printf("Tetris game\n");
   struct Tetris* tetris = tetris_init();
 
-  tetris_add_tetromino(tetris, TETROMINO_SQUARE);
-  while (tetris_last_tetromino_step_down(tetris)) {
-    tetris_print(tetris);
-  }
+  // tetris_add_tetromino(tetris, TETROMINO_SQUARE);
+  // while (tetris_last_tetromino_step_down(tetris)) {
 
-  tetris_add_tetromino(tetris, TETROMINO_SQUARE);
-  tetris_last_tetromino_step_left(tetris);
-  tetris_last_tetromino_step_left(tetris);
-  while (tetris_last_tetromino_step_down(tetris)) {
-    tetris_print(tetris);
-  }
-
-  tetris_add_tetromino(tetris, TETROMINO_SQUARE);
-  tetris_last_tetromino_step_left(tetris);
-  tetris_last_tetromino_step_left(tetris);
-  tetris_last_tetromino_step_left(tetris);
-  tetris_last_tetromino_step_left(tetris);
-  while (tetris_last_tetromino_step_down(tetris)) {
-    tetris_print(tetris);
-  }
-
-  tetris_add_tetromino(tetris, TETROMINO_SQUARE);
-  tetris_last_tetromino_step_right(tetris);
-  tetris_last_tetromino_step_right(tetris);
-  while (tetris_last_tetromino_step_down(tetris)) {
-    tetris_print(tetris);
-  }
-
-  tetris_add_tetromino(tetris, TETROMINO_SQUARE);
-  tetris_last_tetromino_step_right(tetris);
-  tetris_last_tetromino_step_right(tetris);
-  tetris_last_tetromino_step_right(tetris);
-  tetris_last_tetromino_step_right(tetris);
-  while (tetris_last_tetromino_step_down(tetris)) {
-    tetris_print(tetris);
-  }
-
-  tetris_add_tetromino(tetris, TETROMINO_T);
-  while (tetris_last_tetromino_step_down(tetris)) {
-    tetris_print(tetris);
-  }
-
-  tetris_add_tetromino(tetris, TETROMINO_L);
-  while (tetris_last_tetromino_step_down(tetris)) {
-    tetris_print(tetris);
-  }
-
-  tetris_add_tetromino(tetris, TETROMINO_Z);
-  while (tetris_last_tetromino_step_down(tetris)) {
-    tetris_print(tetris);
-  }
-
-  tetris_add_tetromino(tetris, TETROMINO_J);
-  while (tetris_last_tetromino_step_down(tetris)) {
-    tetris_print(tetris);
-  }
-
-  tetris_add_tetromino(tetris, TETROMINO_S);
-  while (tetris_last_tetromino_step_down(tetris)) {
-    tetris_print(tetris);
-  }
-
-  tetris_destroy_line(tetris);
+  tetris_add_tetromino_random(tetris);
   tetris_print(tetris);
+  // }
+
+  // tetris_add_tetromino(tetris, TETROMINO_SQUARE);
+  // tetris_last_tetromino_step_left(tetris);
+  // tetris_last_tetromino_step_left(tetris);
+  // while (tetris_last_tetromino_step_down(tetris)) {
+  //   tetris_print(tetris);
+  // }
+
+  // tetris_add_tetromino(tetris, TETROMINO_SQUARE);
+  // tetris_last_tetromino_step_left(tetris);
+  // tetris_last_tetromino_step_left(tetris);
+  // tetris_last_tetromino_step_left(tetris);
+  // tetris_last_tetromino_step_left(tetris);
+  // while (tetris_last_tetromino_step_down(tetris)) {
+  //   tetris_print(tetris);
+  // }
+
+  // tetris_add_tetromino(tetris, TETROMINO_SQUARE);
+  // tetris_last_tetromino_step_right(tetris);
+  // tetris_last_tetromino_step_right(tetris);
+  // while (tetris_last_tetromino_step_down(tetris)) {
+  //   tetris_print(tetris);
+  // }
+
+  // tetris_add_tetromino(tetris, TETROMINO_SQUARE);
+  // tetris_last_tetromino_step_right(tetris);
+  // tetris_last_tetromino_step_right(tetris);
+  // tetris_last_tetromino_step_right(tetris);
+  // tetris_last_tetromino_step_right(tetris);
+  // while (tetris_last_tetromino_step_down(tetris)) {
+  //   tetris_print(tetris);
+  // }
+
+  // tetris_add_tetromino(tetris, TETROMINO_T);
+  // while (tetris_last_tetromino_step_down(tetris)) {
+  //   tetris_print(tetris);
+  // }
+
+  // tetris_add_tetromino(tetris, TETROMINO_L);
+  // while (tetris_last_tetromino_step_down(tetris)) {
+  //   tetris_print(tetris);
+  // }
+
+  // tetris_add_tetromino(tetris, TETROMINO_Z);
+  // while (tetris_last_tetromino_step_down(tetris)) {
+  //   tetris_print(tetris);
+  // }
+
+  // tetris_add_tetromino(tetris, TETROMINO_J);
+  // while (tetris_last_tetromino_step_down(tetris)) {
+  //   tetris_print(tetris);
+  // }
+
+  // tetris_add_tetromino(tetris, TETROMINO_S);
+  // while (tetris_last_tetromino_step_down(tetris)) {
+  //   tetris_print(tetris);
+  // }
+
+  // tetris_destroy_line(tetris);
+  // tetris_print(tetris);
 
   // tetris_add_tetromino(tetris, TETROMINO_LINE);
   // while (tetris_last_tetromino_step_down(tetris)) {
@@ -170,31 +173,31 @@ void tetris_add_tetromino(struct Tetris* tetris, byte_t type) {
       break;
 
     case TETROMINO_L:
-      tetris->grid[row][column + 1]->type = type;
-      tetris->grid[row][column + 1]->occurence = tetris->last_occurence;
-
       tetris->grid[row + 1][column - 1]->type = type;
       tetris->grid[row + 1][column - 1]->occurence = tetris->last_occurence;
 
-      tetris->grid[row + 1][column]->type = type;
-      tetris->grid[row + 1][column]->occurence = tetris->last_occurence;
-
-      tetris->grid[row + 1][column + 1]->type = type;
-      tetris->grid[row + 1][column + 1]->occurence = tetris->last_occurence;
-      break;
-
-    case TETROMINO_J:
       tetris->grid[row][column - 1]->type = type;
       tetris->grid[row][column - 1]->occurence = tetris->last_occurence;
 
-      tetris->grid[row + 1][column - 1]->type = type;
-      tetris->grid[row + 1][column - 1]->occurence = tetris->last_occurence;
+      tetris->grid[row][column]->type = type;
+      tetris->grid[row][column]->occurence = tetris->last_occurence;
 
-      tetris->grid[row + 1][column]->type = type;
-      tetris->grid[row + 1][column]->occurence = tetris->last_occurence;
+      tetris->grid[row][column + 1]->type = type;
+      tetris->grid[row][column + 1]->occurence = tetris->last_occurence;
+      break;
 
+    case TETROMINO_J:
       tetris->grid[row + 1][column + 1]->type = type;
       tetris->grid[row + 1][column + 1]->occurence = tetris->last_occurence;
+
+      tetris->grid[row][column - 1]->type = type;
+      tetris->grid[row][column - 1]->occurence = tetris->last_occurence;
+
+      tetris->grid[row][column]->type = type;
+      tetris->grid[row][column]->occurence = tetris->last_occurence;
+
+      tetris->grid[row][column + 1]->type = type;
+      tetris->grid[row][column + 1]->occurence = tetris->last_occurence;
       break;
 
     case TETROMINO_Z:
@@ -226,19 +229,26 @@ void tetris_add_tetromino(struct Tetris* tetris, byte_t type) {
       break;
 
     case TETROMINO_T:
-      tetris->grid[row][column]->type = type;
-      tetris->grid[row][column]->occurence = tetris->last_occurence;
-
-      tetris->grid[row + 1][column - 1]->type = type;
-      tetris->grid[row + 1][column - 1]->occurence = tetris->last_occurence;
-
       tetris->grid[row + 1][column]->type = type;
       tetris->grid[row + 1][column]->occurence = tetris->last_occurence;
 
-      tetris->grid[row + 1][column + 1]->type = type;
-      tetris->grid[row + 1][column + 1]->occurence = tetris->last_occurence;
+      tetris->grid[row][column - 1]->type = type;
+      tetris->grid[row][column - 1]->occurence = tetris->last_occurence;
+
+      tetris->grid[row][column]->type = type;
+      tetris->grid[row][column]->occurence = tetris->last_occurence;
+
+      tetris->grid[row][column + 1]->type = type;
+      tetris->grid[row][column + 1]->occurence = tetris->last_occurence;
       break;
   }
+}
+
+void tetris_add_tetromino_random(struct Tetris* tetris) {
+  byte_t tetrominos[] = {TETROMINO_LINE, TETROMINO_SQUARE, TETROMINO_T, TETROMINO_L, TETROMINO_Z, TETROMINO_J, TETROMINO_S};
+  size_t tetrominos_size = sizeof(tetrominos) / sizeof(tetrominos[0]);
+  byte_t tetromino = tetrominos[random_size_t(0, tetrominos_size - 1)];
+  tetris_add_tetromino(tetris, tetromino);
 }
 
 struct Tetris* tetris_copy(struct Tetris* tetris) {

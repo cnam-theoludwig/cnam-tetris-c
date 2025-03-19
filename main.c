@@ -1,3 +1,5 @@
+#include <time.h>
+
 #include "tetris.h"
 
 int main() {
