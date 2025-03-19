@@ -6,77 +6,97 @@ int tetris_game() {
   struct Tetris* tetris = tetris_init();
 
   // tetris_add_tetromino(tetris, TETROMINO_SQUARE);
-  // while (tetris_last_tetromino_step_down(tetris)) {
+  while (tetris_last_tetromino_step_down(tetris)) {
 
   tetris_add_tetromino_random(tetris);
   tetris_print(tetris);
-  // }
+  }
 
   // tetris_add_tetromino(tetris, TETROMINO_SQUARE);
-  // tetris_last_tetromino_step_left(tetris);
-  // tetris_last_tetromino_step_left(tetris);
-  // while (tetris_last_tetromino_step_down(tetris)) {
-  //   tetris_print(tetris);
-  // }
+  tetris_last_tetromino_step_left(tetris);
+  tetris_last_tetromino_step_left(tetris);
+  while (tetris_last_tetromino_step_down(tetris)) {
+    tetris_print(tetris);
+  }
 
   // tetris_add_tetromino(tetris, TETROMINO_SQUARE);
-  // tetris_last_tetromino_step_left(tetris);
-  // tetris_last_tetromino_step_left(tetris);
-  // tetris_last_tetromino_step_left(tetris);
-  // tetris_last_tetromino_step_left(tetris);
-  // while (tetris_last_tetromino_step_down(tetris)) {
-  //   tetris_print(tetris);
-  // }
+  tetris_last_tetromino_step_left(tetris);
+  tetris_last_tetromino_step_left(tetris);
+  tetris_last_tetromino_step_left(tetris);
+  tetris_last_tetromino_step_left(tetris);
+  while (tetris_last_tetromino_step_down(tetris)) {
+    tetris_print(tetris);
+  }
 
   // tetris_add_tetromino(tetris, TETROMINO_SQUARE);
-  // tetris_last_tetromino_step_right(tetris);
-  // tetris_last_tetromino_step_right(tetris);
-  // while (tetris_last_tetromino_step_down(tetris)) {
-  //   tetris_print(tetris);
-  // }
+  tetris_last_tetromino_step_right(tetris);
+  tetris_last_tetromino_step_right(tetris);
+  while (tetris_last_tetromino_step_down(tetris)) {
+    tetris_print(tetris);
+  }
 
   // tetris_add_tetromino(tetris, TETROMINO_SQUARE);
-  // tetris_last_tetromino_step_right(tetris);
-  // tetris_last_tetromino_step_right(tetris);
-  // tetris_last_tetromino_step_right(tetris);
-  // tetris_last_tetromino_step_right(tetris);
-  // while (tetris_last_tetromino_step_down(tetris)) {
-  //   tetris_print(tetris);
-  // }
+  tetris_last_tetromino_step_right(tetris);
+  tetris_last_tetromino_step_right(tetris);
+  tetris_last_tetromino_step_right(tetris);
+  tetris_last_tetromino_step_right(tetris);
+  while (tetris_last_tetromino_step_down(tetris)) {
+    tetris_print(tetris);
+  }
 
-  // tetris_add_tetromino(tetris, TETROMINO_T);
-  // while (tetris_last_tetromino_step_down(tetris)) {
-  //   tetris_print(tetris);
-  // }
+  tetris_add_tetromino(tetris, TETROMINO_T);
+  while (tetris_last_tetromino_step_down(tetris)) {
+    rotate_tetromino_left(tetris);
+    tetris_print(tetris);
+    printf("Rotate left\n");
+    sleep(1);
+    rotate_tetromino_left(tetris);
+    tetris_print(tetris);
+    printf("Rotate left\n");
+    sleep(1);
+    rotate_tetromino_left(tetris);
+    tetris_print(tetris);
+    printf("Rotate left\n");
+    sleep(1);
+    rotate_tetromino_left(tetris);
+    tetris_print(tetris);
+    printf("Rotate left\n");
+    sleep(1);
+    rotate_tetromino_right(tetris);
+    tetris_print(tetris);
+    printf("Rotate right\n");
+    sleep(1);
+
+  }
 
   // tetris_add_tetromino(tetris, TETROMINO_L);
-  // while (tetris_last_tetromino_step_down(tetris)) {
-  //   tetris_print(tetris);
-  // }
+  while (tetris_last_tetromino_step_down(tetris)) {
+    tetris_print(tetris);
+  }
 
   // tetris_add_tetromino(tetris, TETROMINO_Z);
-  // while (tetris_last_tetromino_step_down(tetris)) {
-  //   tetris_print(tetris);
-  // }
+  while (tetris_last_tetromino_step_down(tetris)) {
+    tetris_print(tetris);
+  }
 
   // tetris_add_tetromino(tetris, TETROMINO_J);
-  // while (tetris_last_tetromino_step_down(tetris)) {
-  //   tetris_print(tetris);
-  // }
+  while (tetris_last_tetromino_step_down(tetris)) {
+    tetris_print(tetris);
+  }
 
   // tetris_add_tetromino(tetris, TETROMINO_S);
-  // while (tetris_last_tetromino_step_down(tetris)) {
-  //   tetris_print(tetris);
-  // }
+  while (tetris_last_tetromino_step_down(tetris)) {
+    tetris_print(tetris);
+  }
 
-  // tetris_destroy_line(tetris);
-  // tetris_print(tetris);
+  tetris_destroy_line(tetris);
+  tetris_print(tetris);
 
   // tetris_add_tetromino(tetris, TETROMINO_LINE);
-  // while (tetris_last_tetromino_step_down(tetris)) {
-  //   tetris_print(tetris);
-  //   sleep(1);
-  // }
+  while (tetris_last_tetromino_step_down(tetris)) {
+    tetris_print(tetris);
+    sleep(1);
+  }
 
   tetris_free(tetris);
   return EXIT_SUCCESS;
@@ -392,4 +412,154 @@ void tetris_last_tetromino_step_right(struct Tetris* tetris) {
   }
 
   tetris_free(copy_tetris);
+}
+
+// 🛠 Fonction qui détruit UNE ligne et décale les autres vers le bas
+void destroy_single_line(struct Tetris* tetris, int row) {
+  printf("Destruction de la ligne %d\n", row);
+
+  for (int r = row; r > 0; r--) {
+      for (int column = 0; column < GRID_WIDTH; column++) {
+          tetris->grid[r][column]->type = tetris->grid[r - 1][column]->type;
+          tetris->grid[r][column]->occurence = tetris->grid[r - 1][column]->occurence;
+      }
+  }
+
+  for (int column = 0; column < GRID_WIDTH; column++) {
+      tetris->grid[0][column]->type = TETROMINO_EMPTY;
+      tetris->grid[0][column]->occurence = 0;
+  }
+}
+// 1️⃣ Récupère les positions des blocs du TETROMINO actif et son type
+int get_tetromino_blocks(struct Tetris* tetris, int blocks[TETROMINO_SIZE][2], int *tetromino_type) {
+    int count = 0;
+    for (int row = 0; row < GRID_HEIGHT; row++) {
+        for (int column = 0; column < GRID_WIDTH; column++) {
+            if (tetris->grid[row][column]->occurence == tetris->last_occurence) {
+                if (count == 0) {
+                    *tetromino_type = tetris->grid[row][column]->type; // Récupérer le type
+                }
+                blocks[count][0] = column;
+                blocks[count][1] = row;
+                count++;
+                if (count == TETROMINO_SIZE) return 1;
+            }
+        }
+    }
+    return 0; // Sécurité : si on n'a pas trouvé 4 blocs, on annule
+}
+// 📌 Définition des centres de rotation en fonction du type de Tetrimino
+void get_rotation_center(int blocks[TETROMINO_SIZE][2], int *cx, int *cy, int tetromino_type) {
+  switch (tetromino_type) {
+      case TETROMINO_SQUARE:  // O ne tourne pas
+          *cx = blocks[0][0];
+          *cy = blocks[0][1];
+          break;
+      case TETROMINO_T:  // Le centre est le bloc du milieu sur la ligne horizontale
+          *cx = blocks[1][0];
+          *cy = blocks[1][1];
+          break;
+      case TETROMINO_LINE:  // Centre entre les 2 blocs du milieu
+          *cx = (blocks[1][0] + blocks[2][0]) / 2;
+          *cy = (blocks[1][1] + blocks[2][1]) / 2;
+          break;
+      case TETROMINO_S:  // On suit la structure 3x3
+          *cx = blocks[1][0];
+          *cy = blocks[1][1];
+          break;
+      case TETROMINO_L:  // Bloc vide dans la structure 3x3
+          *cx = blocks[1][0];
+          *cy = blocks[1][1];
+          break;
+      default:  // Pour J, Z, etc. : on prend le deuxième bloc
+          *cx = blocks[1][0];
+          *cy = blocks[1][1];
+          break;
+  }
+}
+
+// 📌 Calcule les nouvelles positions après rotation en fonction du sens
+void compute_rotation(int blocks[TETROMINO_SIZE][2], int new_positions[TETROMINO_SIZE][2], int tetromino_type, int direction) {
+  int cx, cy;
+  get_rotation_center(blocks, &cx, &cy, tetromino_type);  // Récupérer le centre de rotation
+
+  for (int i = 0; i < TETROMINO_SIZE; i++) {
+      int x = blocks[i][0] - cx;
+      int y = blocks[i][1] - cy;
+
+      if (direction == 1) { // Rotation à droite (+90°)
+          new_positions[i][0] = cx + y;
+          new_positions[i][1] = cy - x;
+      } else { // Rotation à gauche (-90°)
+          new_positions[i][0] = cx - y;
+          new_positions[i][1] = cy + x;
+      }
+  }
+}
+
+// 📌 Vérifie si la rotation est valide
+int is_rotation_valid(struct Tetris* tetris, int new_positions[TETROMINO_SIZE][2]) {
+  for (int i = 0; i < TETROMINO_SIZE; i++) {
+      int new_x = new_positions[i][0];
+      int new_y = new_positions[i][1];
+
+      // Vérifie si la nouvelle position est en dehors de la grille
+      if (new_x < 0 || new_x >= GRID_WIDTH || new_y < 0 || new_y >= GRID_HEIGHT) {
+          return 0;
+      }
+      // Vérifie s'il y a un bloc qui appartient à un autre Tetrimino
+      if (tetris->grid[new_y][new_x]->type != TETROMINO_EMPTY &&
+          tetris->grid[new_y][new_x]->occurence != tetris->last_occurence) {
+          return 0;
+      }
+  }
+  return 1; // Rotation valide
+}
+
+// 📌 Applique la rotation sur le Tetrimino
+void apply_rotation(struct Tetris* tetris, int blocks[TETROMINO_SIZE][2], int new_positions[TETROMINO_SIZE][2], int tetromino_type) {
+  for (int i = 0; i < TETROMINO_SIZE; i++) {
+      tetris->grid[blocks[i][1]][blocks[i][0]]->type = TETROMINO_EMPTY;
+      tetris->grid[blocks[i][1]][blocks[i][0]]->occurence = 0;
+  }
+  for (int i = 0; i < TETROMINO_SIZE; i++) {
+      tetris->grid[new_positions[i][1]][new_positions[i][0]]->type = tetromino_type;
+      tetris->grid[new_positions[i][1]][new_positions[i][0]]->occurence = tetris->last_occurence;
+  }
+}
+
+// 📌 Fonction principale qui gère la rotation à droite
+void rotate_tetromino_right(struct Tetris* tetris) {
+  int blocks[TETROMINO_SIZE][2], new_positions[TETROMINO_SIZE][2];
+  int tetromino_type;
+
+  // Récupérer les blocs du Tetrimino et son type
+  if (!get_tetromino_blocks(tetris, blocks, &tetromino_type)) return;
+
+  // Calculer la rotation vers la droite (+90°)
+  compute_rotation(blocks, new_positions, tetromino_type, 1);
+
+  // Vérifier si la rotation est possible
+  if (!is_rotation_valid(tetris, new_positions)) return;
+
+  // Appliquer la rotation
+  apply_rotation(tetris, blocks, new_positions, tetromino_type);
+}
+
+// 📌 Fonction principale qui gère la rotation à gauche
+void rotate_tetromino_left(struct Tetris* tetris) {
+  int blocks[TETROMINO_SIZE][2], new_positions[TETROMINO_SIZE][2];
+  int tetromino_type;
+
+  // Récupérer les blocs du Tetrimino et son type
+  if (!get_tetromino_blocks(tetris, blocks, &tetromino_type)) return;
+
+  // Calculer la rotation vers la gauche (-90°)
+  compute_rotation(blocks, new_positions, tetromino_type, -1);
+
+  // Vérifier si la rotation est possible
+  if (!is_rotation_valid(tetris, new_positions)) return;
+
+  // Appliquer la rotation
+  apply_rotation(tetris, blocks, new_positions, tetromino_type);
 }

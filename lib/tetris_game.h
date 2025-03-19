@@ -20,6 +20,7 @@
 #define TETROMINO_J 'J'
 #define TETROMINO_Z 'Z'
 #define TETROMINO_S 'S'
+#define TETROMINO_SIZE 4
 
 struct Tetris {
   struct Block*** grid;
@@ -52,8 +53,28 @@ void tetris_last_tetromino_step_right(struct Tetris* tetris);
 
 struct Tetris* tetris_copy(struct Tetris* tetris);
 
+void tetris_destroy_single_line(struct Tetris* tetris, size_t row);
+
+int tetris_can_tetromino_step_down(struct Tetris* tetris) ;
+
 void tetris_destroy_line(struct Tetris* tetris);
 
-void tetris_destroy_single_line(struct Tetris* tetris, size_t row);
+void destroy_single_line(struct Tetris* tetris, int row);
+
+int get_tetromino_blocks(struct Tetris* tetris, int blocks[TETROMINO_SIZE][2], int *tetromino_type) ;
+
+
+int is_rotation_valid(struct Tetris* tetris, int new_positions[TETROMINO_SIZE][2]);
+
+
+void compute_rotation(int blocks[TETROMINO_SIZE][2], int new_positions[TETROMINO_SIZE][2], int tetromino_type, int direction) ;
+
+void rotate_tetromino_right(struct Tetris* tetris);
+
+void rotate_tetromino_left(struct Tetris* tetris);
+
+void apply_rotation(struct Tetris* tetris, int blocks[TETROMINO_SIZE][2], int new_positions[TETROMINO_SIZE][2], int tetromino_type);
+
+void get_rotation_center(int blocks[TETROMINO_SIZE][2], int *cx, int *cy, int tetromino_type) ;
 
 #endif
