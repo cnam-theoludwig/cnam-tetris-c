@@ -17,8 +17,8 @@
 #define TETROMINO_SQUARE 'O'
 #define TETROMINO_T 'T'
 #define TETROMINO_L 'L'
-#define TETROMINO_Z 'Z'
 #define TETROMINO_J 'J'
+#define TETROMINO_Z 'Z'
 #define TETROMINO_S 'S'
 
 struct Tetris {
@@ -54,6 +54,6 @@ struct Tetris* tetris_copy(struct Tetris* tetris);
 
 void tetris_destroy_line(struct Tetris* tetris);
 
-void tetris_destroy_single_line(struct Tetris* tetris, int row);
+void tetris_destroy_single_line(struct Tetris* tetris, size_t row);
 
 #endif
