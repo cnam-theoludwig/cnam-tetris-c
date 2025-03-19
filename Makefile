@@ -25,6 +25,10 @@ SDL_PATH = ${SDL_BUILD_FOLDER}/libSDL2.a
 SDL_LIB = -L${SDL_BUILD_FOLDER} -lSDL2 -ldl -lpthread
 
 MAIN_EXECUTABLE = bin/tetris
+TEST_EXECUTABLE = bin/test
+
+TEST_SOURCES = $(wildcard test/*.c)
+TEST_OBJECTS = $(patsubst %.c, %.o, $(TEST_SOURCES))
 
 .PHONY: all
 all: ${LIB} ${MAIN_EXECUTABLE}
@@ -58,12 +62,24 @@ ${DEPENDENCIES_FOLDER}:
 build/lib:
 	mkdir --parents ./build/lib
 
+build/test:
+	mkdir --parents ./build/test
+
 build/lib/%.o: lib/%.c ${HEADER_FILES} | build/lib ${LIBCPROJECT_PATH} ${SDL_PATH}
+	${CC} ${CC_FLAGS} ${CC_SANITIZER_FLAGS} -c $< -o $@ ${LIBCPROJECT_LIB} ${SDL_LIB}
+
+build/test/%.o: test/%.c ${HEADER_FILES} | build/test ${LIBCPROJECT_PATH} ${SDL_PATH}
 	${CC} ${CC_FLAGS} ${CC_SANITIZER_FLAGS} -c $< -o $@ ${LIBCPROJECT_LIB} ${SDL_LIB}
 
 .PHONY: run
 run: ${MAIN_EXECUTABLE}
 	./${MAIN_EXECUTABLE} ${ARGS}
+
+.PHONY: test
+test: ${LIB} $(addprefix build/, ${TEST_OBJECTS})
+	mkdir --parents ./bin
+	${CC} ${CC_FLAGS} ${CC_SANITIZER_FLAGS} -o ${TEST_EXECUTABLE} $(addprefix build/, ${TEST_OBJECTS}) ${LIB_CC_FLAGS} ${LIBCPROJECT_LIB} ${SDL_LIB}
+	./${TEST_EXECUTABLE} ${ARGS}
 
 .PHONY: libcproject
 libcproject: ${LIBCPROJECT_PATH}
@@ -73,7 +89,7 @@ sdl: ${SDL_PATH}
 
 .PHONY: lint
 lint:
-	clang-format --Werror --dry-run ${LIB_SOURCES} ${HEADER_FILES} ./main.c
+	clang-format --Werror --dry-run ${LIB_SOURCES} ${TEST_SOURCES} ${HEADER_FILES} ./main.c
 
 .PHONY: clean
 clean:
@@ -83,5 +99,5 @@ clean:
 clean-deps:
 	rm --recursive --force ${DEPENDENCIES_FOLDER}
 
-.PHONE: clean-all
+.PHONY: clean-all
 clean-all: clean clean-deps
