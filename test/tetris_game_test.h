@@ -22,7 +22,7 @@ void tetris_add_tetromino_s_test();
 
 void tetris_last_tetromino_step_down_test();
 void tetris_last_tetromino_step_down_with_add_test();
-void tetris_last_tetromino_step_down_with_collisions();
+void tetris_last_tetromino_step_down_with_collisions_test();
 
 void tetris_last_tetromino_step_left_test();
 void tetris_last_tetromino_step_right_test();
