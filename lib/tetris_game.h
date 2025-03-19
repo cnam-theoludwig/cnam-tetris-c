@@ -22,17 +22,15 @@
 #define TETROMINO_S 'S'
 
 struct Tetris {
-  struct Block*** grid;
+  struct TetrisBlock*** grid;
   size_t score;
   size_t last_occurence;
 };
 
-struct Block {
+struct TetrisBlock {
   byte_t type;
   size_t occurence;
 };
-
-int tetris_game();
 
 void tetris_print(struct Tetris* tetris);
 

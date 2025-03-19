@@ -1,87 +1,5 @@
 #include "./tetris_game.h"
 
-int tetris_game() {
-  srand(time(NULL));
-  printf("Tetris game\n");
-  struct Tetris* tetris = tetris_init();
-
-  // tetris_add_tetromino(tetris, TETROMINO_SQUARE);
-  // while (tetris_last_tetromino_step_down(tetris)) {
-
-  tetris_add_tetromino_random(tetris);
-  tetris_print(tetris);
-  // }
-
-  // tetris_add_tetromino(tetris, TETROMINO_SQUARE);
-  // tetris_last_tetromino_step_left(tetris);
-  // tetris_last_tetromino_step_left(tetris);
-  // while (tetris_last_tetromino_step_down(tetris)) {
-  //   tetris_print(tetris);
-  // }
-
-  // tetris_add_tetromino(tetris, TETROMINO_SQUARE);
-  // tetris_last_tetromino_step_left(tetris);
-  // tetris_last_tetromino_step_left(tetris);
-  // tetris_last_tetromino_step_left(tetris);
-  // tetris_last_tetromino_step_left(tetris);
-  // while (tetris_last_tetromino_step_down(tetris)) {
-  //   tetris_print(tetris);
-  // }
-
-  // tetris_add_tetromino(tetris, TETROMINO_SQUARE);
-  // tetris_last_tetromino_step_right(tetris);
-  // tetris_last_tetromino_step_right(tetris);
-  // while (tetris_last_tetromino_step_down(tetris)) {
-  //   tetris_print(tetris);
-  // }
-
-  // tetris_add_tetromino(tetris, TETROMINO_SQUARE);
-  // tetris_last_tetromino_step_right(tetris);
-  // tetris_last_tetromino_step_right(tetris);
-  // tetris_last_tetromino_step_right(tetris);
-  // tetris_last_tetromino_step_right(tetris);
-  // while (tetris_last_tetromino_step_down(tetris)) {
-  //   tetris_print(tetris);
-  // }
-
-  // tetris_add_tetromino(tetris, TETROMINO_T);
-  // while (tetris_last_tetromino_step_down(tetris)) {
-  //   tetris_print(tetris);
-  // }
-
-  // tetris_add_tetromino(tetris, TETROMINO_L);
-  // while (tetris_last_tetromino_step_down(tetris)) {
-  //   tetris_print(tetris);
-  // }
-
-  // tetris_add_tetromino(tetris, TETROMINO_Z);
-  // while (tetris_last_tetromino_step_down(tetris)) {
-  //   tetris_print(tetris);
-  // }
-
-  // tetris_add_tetromino(tetris, TETROMINO_J);
-  // while (tetris_last_tetromino_step_down(tetris)) {
-  //   tetris_print(tetris);
-  // }
-
-  // tetris_add_tetromino(tetris, TETROMINO_S);
-  // while (tetris_last_tetromino_step_down(tetris)) {
-  //   tetris_print(tetris);
-  // }
-
-  // tetris_destroy_line(tetris);
-  // tetris_print(tetris);
-
-  // tetris_add_tetromino(tetris, TETROMINO_LINE);
-  // while (tetris_last_tetromino_step_down(tetris)) {
-  //   tetris_print(tetris);
-  //   sleep(1);
-  // }
-
-  tetris_free(tetris);
-  return EXIT_SUCCESS;
-}
-
 struct Tetris* tetris_init() {
   struct Tetris* tetris = malloc(sizeof(struct Tetris));
   if (tetris == NULL) {
@@ -97,13 +15,13 @@ struct Tetris* tetris_init() {
   }
 
   for (size_t row = 0; row < GRID_HEIGHT; row++) {
-    tetris->grid[row] = malloc(sizeof(struct Block*) * GRID_WIDTH);
+    tetris->grid[row] = malloc(sizeof(struct TetrisBlock*) * GRID_WIDTH);
     if (tetris->grid[row] == NULL) {
       perror("Error (tetris_init)");
       exit(EXIT_FAILURE);
     }
     for (size_t column = 0; column < GRID_WIDTH; column++) {
-      struct Block* block = malloc(sizeof(struct Block));
+      struct TetrisBlock* block = malloc(sizeof(struct TetrisBlock));
       if (block == NULL) {
         perror("Error (tetris_init)");
         exit(EXIT_FAILURE);

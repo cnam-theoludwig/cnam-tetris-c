@@ -3,5 +3,6 @@
 
 #include "lib/arkanoid_game.h"
 #include "lib/tetris_game.h"
+#include "lib/tetris_ui.h"
 
 #endif
