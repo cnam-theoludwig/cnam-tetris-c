@@ -7,6 +7,7 @@
 
 #include "../dependencies/SDL/include/SDL.h"
 #include "../dependencies/libcproject/libcproject.h"
+#include "./random.h"
 
 #define GRID_WIDTH 10
 #define GRID_HEIGHT 20
@@ -16,8 +17,8 @@
 #define TETROMINO_SQUARE 'O'
 #define TETROMINO_T 'T'
 #define TETROMINO_L 'L'
-#define TETROMINO_Z 'Z'
 #define TETROMINO_J 'J'
+#define TETROMINO_Z 'Z'
 #define TETROMINO_S 'S'
 
 struct Tetris {
@@ -41,7 +42,7 @@ void tetris_free(struct Tetris* tetris);
 
 void tetris_add_tetromino(struct Tetris* tetris, byte_t type);
 
-// void tetris_add_tetromino_random(struct Tetris* tetris);
+void tetris_add_tetromino_random(struct Tetris* tetris);
 
 bool tetris_last_tetromino_step_down(struct Tetris* tetris);
 
@@ -53,6 +54,6 @@ struct Tetris* tetris_copy(struct Tetris* tetris);
 
 void tetris_destroy_line(struct Tetris* tetris);
 
-void tetris_destroy_single_line(struct Tetris* tetris, int row);
+void tetris_destroy_single_line(struct Tetris* tetris, size_t row);
 
 #endif
