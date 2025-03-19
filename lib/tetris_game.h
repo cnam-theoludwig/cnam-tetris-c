@@ -7,18 +7,19 @@
 
 #include "../dependencies/SDL/include/SDL.h"
 #include "../dependencies/libcproject/libcproject.h"
+#include "./random.h"
 
 #define GRID_WIDTH 10
 #define GRID_HEIGHT 20
 
-#define TETRIMINO_EMPTY '0'
-#define TETRIMINO_LINE 'I'
-#define TETRIMINO_SQUARE 'O'
-#define TETRIMINO_T 'T'
-#define TETRIMINO_L 'L'
-#define TETRIMINO_Z 'Z'
-#define TETRIMINO_J 'J'
-#define TETRIMINO_S 'S'
+#define TETROMINO_EMPTY '0'
+#define TETROMINO_LINE 'I'
+#define TETROMINO_SQUARE 'O'
+#define TETROMINO_T 'T'
+#define TETROMINO_L 'L'
+#define TETROMINO_J 'J'
+#define TETROMINO_Z 'Z'
+#define TETROMINO_S 'S'
 #define TETRIMINO_SIZE 4
 
 struct Tetris {
@@ -40,15 +41,21 @@ struct Tetris* tetris_init();
 
 void tetris_free(struct Tetris* tetris);
 
-void tetris_add_tetrimino(struct Tetris* tetris, byte_t type);
+void tetris_add_tetromino(struct Tetris* tetris, byte_t type);
 
-// void tetris_add_tetrimino_random(struct Tetris* tetris);
+void tetris_add_tetromino_random(struct Tetris* tetris);
 
-int tetris_can_tetrimino_step_down(struct Tetris* tetris) ;
+bool tetris_last_tetromino_step_down(struct Tetris* tetris);
 
-void tetris_step_down_last_tetrimino(struct Tetris* tetris);
+void tetris_last_tetromino_step_left(struct Tetris* tetris);
+
+void tetris_last_tetromino_step_right(struct Tetris* tetris);
 
 struct Tetris* tetris_copy(struct Tetris* tetris);
+
+void tetris_destroy_line(struct Tetris* tetris);
+
+void tetris_destroy_single_line(struct Tetris* tetris, size_t row);
 
 void tetris_destroy_line(struct Tetris* tetris);
 
