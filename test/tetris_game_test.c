@@ -13,7 +13,7 @@ void tetris_game_test() {
 
   tetris_last_tetromino_step_down_test();
   tetris_last_tetromino_step_down_with_add_test();
-  tetris_last_tetromino_step_down_with_collisions();
+  tetris_last_tetromino_step_down_with_collisions_test();
 
   tetris_last_tetromino_step_left_test();
   tetris_last_tetromino_step_right_test();
@@ -301,7 +301,7 @@ void tetris_last_tetromino_step_down_with_add_test() {
 
   tetris_free(tetris);
 }
-void tetris_last_tetromino_step_down_with_collisions() {
+void tetris_last_tetromino_step_down_with_collisions_test() {
   struct Tetris* tetris = tetris_init();
 
   tetris_add_tetromino(tetris, TETROMINO_SQUARE);
