@@ -7,9 +7,7 @@ bool tetris_last_tetromino_step_down(struct Tetris* tetris) {
     for (size_t column = GRID_WIDTH - 1; column != SIZE_MAX; column--) {
       if (tetris->grid[row][column]->occurence == tetris->last_occurence) {
         if (row + 1 >= GRID_HEIGHT ||
-            (tetris->grid[row + 1][column]->type != TETROMINO_EMPTY &&
-             tetris->grid[row + 1][column]->occurence !=
-                 tetris->last_occurence)) {
+            (tetris->grid[row + 1][column]->type != TETROMINO_EMPTY && tetris->grid[row + 1][column]->occurence != tetris->last_occurence)) {
           can_move = false;
           break;
         }
@@ -42,9 +40,7 @@ void tetris_last_tetromino_step_left(struct Tetris* tetris) {
     for (size_t column = 0; column < GRID_WIDTH; column++) {
       if (tetris->grid[row][column]->occurence == tetris->last_occurence) {
         if (column == 0 ||
-            (tetris->grid[row][column - 1]->type != TETROMINO_EMPTY &&
-             tetris->grid[row][column - 1]->occurence !=
-                 tetris->last_occurence)) {
+            (tetris->grid[row][column - 1]->type != TETROMINO_EMPTY && tetris->grid[row][column - 1]->occurence != tetris->last_occurence)) {
           return;
         }
       }
@@ -83,9 +79,7 @@ void tetris_last_tetromino_step_right(struct Tetris* tetris) {
     for (size_t column = 0; column < GRID_WIDTH; column++) {
       if (tetris->grid[row][column]->occurence == tetris->last_occurence) {
         if (column == GRID_WIDTH - 1 ||
-            (tetris->grid[row][column + 1]->type != TETROMINO_EMPTY &&
-             tetris->grid[row][column + 1]->occurence !=
-                 tetris->last_occurence)) {
+            (tetris->grid[row][column + 1]->type != TETROMINO_EMPTY && tetris->grid[row][column + 1]->occurence != tetris->last_occurence)) {
           return;
         }
       }
