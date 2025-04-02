@@ -4,105 +4,128 @@ void tetris_add_tetromino(struct Tetris* tetris, byte_t type) {
   size_t row = 0;
   size_t column = GRID_WIDTH / 2;
   tetris->last_occurence += 1;
+  tetris->last_type = type;
 
   switch (type) {
-    case TETROMINO_LINE:
-      tetris->grid[row][column - 2]->type = type;
-      tetris->grid[row][column - 2]->occurence = tetris->last_occurence;
+      case TETROMINO_LINE:
+          tetris->grid[row][column - 2]->type = type;
+          tetris->grid[row][column - 2]->occurence = tetris->last_occurence;
 
-      tetris->grid[row][column - 1]->type = type;
-      tetris->grid[row][column - 1]->occurence = tetris->last_occurence;
+          tetris->grid[row][column - 1]->type = type;
+          tetris->grid[row][column - 1]->occurence = tetris->last_occurence;
 
-      tetris->grid[row][column]->type = type;
-      tetris->grid[row][column]->occurence = tetris->last_occurence;
+          tetris->grid[row][column]->type = type;
+          tetris->grid[row][column]->occurence = tetris->last_occurence;
 
-      tetris->grid[row][column + 1]->type = type;
-      tetris->grid[row][column + 1]->occurence = tetris->last_occurence;
-      break;
+          tetris->grid[row][column + 1]->type = type;
+          tetris->grid[row][column + 1]->occurence = tetris->last_occurence;
 
-    case TETROMINO_SQUARE:
-      tetris->grid[row][column - 1]->type = type;
-      tetris->grid[row][column - 1]->occurence = tetris->last_occurence;
+          tetris->last_pivot_x = column;
+          tetris->last_pivot_y = row;
+          break;
 
-      tetris->grid[row][column]->type = type;
-      tetris->grid[row][column]->occurence = tetris->last_occurence;
+      case TETROMINO_SQUARE:
+          tetris->grid[row][column - 1]->type = type;
+          tetris->grid[row][column - 1]->occurence = tetris->last_occurence;
 
-      tetris->grid[row + 1][column - 1]->type = type;
-      tetris->grid[row + 1][column - 1]->occurence = tetris->last_occurence;
+          tetris->grid[row][column]->type = type;
+          tetris->grid[row][column]->occurence = tetris->last_occurence;
 
-      tetris->grid[row + 1][column]->type = type;
-      tetris->grid[row + 1][column]->occurence = tetris->last_occurence;
-      break;
+          tetris->grid[row + 1][column - 1]->type = type;
+          tetris->grid[row + 1][column - 1]->occurence = tetris->last_occurence;
 
-    case TETROMINO_T:
-      tetris->grid[row + 1][column]->type = type;
-      tetris->grid[row + 1][column]->occurence = tetris->last_occurence;
+          tetris->grid[row + 1][column]->type = type;
+          tetris->grid[row + 1][column]->occurence = tetris->last_occurence;
 
-      tetris->grid[row][column - 1]->type = type;
-      tetris->grid[row][column - 1]->occurence = tetris->last_occurence;
+          // No rotation => pick top-left as dummy
+          tetris->last_pivot_x = column;
+          tetris->last_pivot_y = row;
+          break;
 
-      tetris->grid[row][column]->type = type;
-      tetris->grid[row][column]->occurence = tetris->last_occurence;
+      case TETROMINO_T:
+          tetris->grid[row][column - 1]->type = type;
+          tetris->grid[row][column - 1]->occurence = tetris->last_occurence;
 
-      tetris->grid[row][column + 1]->type = type;
-      tetris->grid[row][column + 1]->occurence = tetris->last_occurence;
-      break;
+          tetris->grid[row][column]->type = type;
+          tetris->grid[row][column]->occurence = tetris->last_occurence;
 
-    case TETROMINO_L:
-      tetris->grid[row + 1][column - 1]->type = type;
-      tetris->grid[row + 1][column - 1]->occurence = tetris->last_occurence;
+          tetris->grid[row][column + 1]->type = type;
+          tetris->grid[row][column + 1]->occurence = tetris->last_occurence;
 
-      tetris->grid[row][column - 1]->type = type;
-      tetris->grid[row][column - 1]->occurence = tetris->last_occurence;
+          tetris->grid[row + 1][column]->type = type;
+          tetris->grid[row + 1][column]->occurence = tetris->last_occurence;
 
-      tetris->grid[row][column]->type = type;
-      tetris->grid[row][column]->occurence = tetris->last_occurence;
+          tetris->last_pivot_x = column;
+          tetris->last_pivot_y = row;
+          break;
 
-      tetris->grid[row][column + 1]->type = type;
-      tetris->grid[row][column + 1]->occurence = tetris->last_occurence;
-      break;
+      case TETROMINO_L:
+          tetris->grid[row][column - 1]->type = type;
+          tetris->grid[row][column - 1]->occurence = tetris->last_occurence;
 
-    case TETROMINO_J:
-      tetris->grid[row + 1][column + 1]->type = type;
-      tetris->grid[row + 1][column + 1]->occurence = tetris->last_occurence;
+          tetris->grid[row][column]->type = type;
+          tetris->grid[row][column]->occurence = tetris->last_occurence;
 
-      tetris->grid[row][column - 1]->type = type;
-      tetris->grid[row][column - 1]->occurence = tetris->last_occurence;
+          tetris->grid[row][column + 1]->type = type;
+          tetris->grid[row][column + 1]->occurence = tetris->last_occurence;
 
-      tetris->grid[row][column]->type = type;
-      tetris->grid[row][column]->occurence = tetris->last_occurence;
+          tetris->grid[row + 1][column + 1]->type = type;
+          tetris->grid[row + 1][column + 1]->occurence = tetris->last_occurence;
 
-      tetris->grid[row][column + 1]->type = type;
-      tetris->grid[row][column + 1]->occurence = tetris->last_occurence;
-      break;
+          tetris->last_pivot_x = column;
+          tetris->last_pivot_y = row;
+          break;
 
-    case TETROMINO_Z:
-      tetris->grid[row][column - 1]->type = type;
-      tetris->grid[row][column - 1]->occurence = tetris->last_occurence;
+      case TETROMINO_J:
+          tetris->grid[row][column - 1]->type = type;
+          tetris->grid[row][column - 1]->occurence = tetris->last_occurence;
 
-      tetris->grid[row][column]->type = type;
-      tetris->grid[row][column]->occurence = tetris->last_occurence;
+          tetris->grid[row][column]->type = type;
+          tetris->grid[row][column]->occurence = tetris->last_occurence;
 
-      tetris->grid[row + 1][column]->type = type;
-      tetris->grid[row + 1][column]->occurence = tetris->last_occurence;
+          tetris->grid[row][column + 1]->type = type;
+          tetris->grid[row][column + 1]->occurence = tetris->last_occurence;
 
-      tetris->grid[row + 1][column + 1]->type = type;
-      tetris->grid[row + 1][column + 1]->occurence = tetris->last_occurence;
-      break;
+          tetris->grid[row + 1][column - 1]->type = type;
+          tetris->grid[row + 1][column - 1]->occurence = tetris->last_occurence;
 
-    case TETROMINO_S:
-      tetris->grid[row][column]->type = type;
-      tetris->grid[row][column]->occurence = tetris->last_occurence;
+          tetris->last_pivot_x = column;
+          tetris->last_pivot_y = row;
+          break;
 
-      tetris->grid[row][column + 1]->type = type;
-      tetris->grid[row][column + 1]->occurence = tetris->last_occurence;
+      case TETROMINO_Z:
+          tetris->grid[row][column - 1]->type = type;
+          tetris->grid[row][column - 1]->occurence = tetris->last_occurence;
 
-      tetris->grid[row + 1][column - 1]->type = type;
-      tetris->grid[row + 1][column - 1]->occurence = tetris->last_occurence;
+          tetris->grid[row][column]->type = type;
+          tetris->grid[row][column]->occurence = tetris->last_occurence;
 
-      tetris->grid[row + 1][column]->type = type;
-      tetris->grid[row + 1][column]->occurence = tetris->last_occurence;
-      break;
+          tetris->grid[row + 1][column]->type = type;
+          tetris->grid[row + 1][column]->occurence = tetris->last_occurence;
+
+          tetris->grid[row + 1][column + 1]->type = type;
+          tetris->grid[row + 1][column + 1]->occurence = tetris->last_occurence;
+
+          tetris->last_pivot_x = column;
+          tetris->last_pivot_y = row;
+          break;
+
+      case TETROMINO_S:
+          tetris->grid[row][column]->type = type;
+          tetris->grid[row][column]->occurence = tetris->last_occurence;
+
+          tetris->grid[row][column + 1]->type = type;
+          tetris->grid[row][column + 1]->occurence = tetris->last_occurence;
+
+          tetris->grid[row + 1][column - 1]->type = type;
+          tetris->grid[row + 1][column - 1]->occurence = tetris->last_occurence;
+
+          tetris->grid[row + 1][column]->type = type;
+          tetris->grid[row + 1][column]->occurence = tetris->last_occurence;
+
+          tetris->last_pivot_x = column;
+          tetris->last_pivot_y = row;
+          break;
   }
 }
 

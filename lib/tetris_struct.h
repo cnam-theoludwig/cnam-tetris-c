@@ -17,6 +17,7 @@
 #define TETROMINO_J 'J'
 #define TETROMINO_Z 'Z'
 #define TETROMINO_S 'S'
+#define TETROMINO_SIZE 4
 
 typedef uint8_t byte_t;
 
@@ -29,7 +30,11 @@ struct Tetris {
   struct TetrisBlock*** grid;
   size_t score;
   size_t last_occurence;
+  byte_t last_type;
+  int last_pivot_x;
+  int last_pivot_y;
 };
+
 
 struct TetrisBlock {
   byte_t type;
