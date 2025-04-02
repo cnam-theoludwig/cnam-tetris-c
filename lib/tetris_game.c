@@ -181,9 +181,6 @@ struct Tetris* tetris_copy(struct Tetris* tetris) {
   return copy_tetris;
 }
 
-// void tetris_add_tetromino_random(struct Tetris* tetris) {
-// }
-
 void tetris_destroy_single_line(struct Tetris* tetris, size_t row) {
   for (size_t r = row; r > 0; r--) {
     for (size_t column = 0; column < GRID_WIDTH; column++) {

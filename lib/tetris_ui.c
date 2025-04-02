@@ -94,7 +94,7 @@ int tetris_ui() {
     tetris_ui_render_grid(renderer, tetris);
 
     SDL_RenderPresent(renderer);
-    SDL_Delay(1);
+    // SDL_Delay(1);
   }
 
   tetris_free(tetris);
