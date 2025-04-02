@@ -6,8 +6,7 @@
 #include <stdlib.h>
 
 #include "../dependencies/SDL/include/SDL.h"
-#include "../dependencies/libcproject/libcproject.h"
-#include "./tetris_game.h"
+#include "../tetris.h"
 
 #define TETRIS_WINDOW_WIDTH 400
 #define TETRIS_WINDOW_HEIGHT 800

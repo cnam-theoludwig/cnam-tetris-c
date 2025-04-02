@@ -11,12 +11,6 @@ LIB_OBJECTS = $(patsubst %.c, %.o, $(LIB_SOURCES))
 
 DEPENDENCIES_FOLDER = ./dependencies
 
-LIBCPROJECT_REPO = https://github.com/theoludwig/libcproject.git
-LIBCPROJECT_VERSION = v5.1.0
-LIBCPROJECT_FOLDER = ${DEPENDENCIES_FOLDER}/libcproject
-LIBCPROJECT_PATH = ${LIBCPROJECT_FOLDER}/build/libcproject.a
-LIBCPROJECT_LIB = -l:${LIBCPROJECT_PATH}
-
 SDL_REPO = https://github.com/libsdl-org/SDL.git
 SDL_VERSION = release-2.32.2
 SDL_FOLDER = ${DEPENDENCIES_FOLDER}/SDL
@@ -37,16 +31,9 @@ ${LIB}: $(addprefix build/, ${LIB_OBJECTS})
 	rm --force ${LIB}
 	ar -rcs ${LIB} $(addprefix build/, ${LIB_OBJECTS})
 
-${MAIN_EXECUTABLE}: ${LIB} ./main.c ${LIBCPROJECT_PATH} ${SDL_PATH}
+${MAIN_EXECUTABLE}: ${LIB} ./main.c ${SDL_PATH}
 	mkdir --parents ./bin
-	${CC} ${CC_FLAGS} ${CC_SANITIZER_FLAGS} -o ${MAIN_EXECUTABLE} ./main.c ${LIB_CC_FLAGS} ${LIBCPROJECT_LIB} ${SDL_LIB}
-
-${LIBCPROJECT_PATH}: ${DEPENDENCIES_FOLDER}
-	if [ ! -d "${LIBCPROJECT_FOLDER}" ]; then \
-		git clone ${LIBCPROJECT_REPO} ${LIBCPROJECT_FOLDER}; \
-		git -C ${LIBCPROJECT_FOLDER} checkout ${LIBCPROJECT_VERSION}; \
-	fi
-	${MAKE} -C ${LIBCPROJECT_FOLDER}
+	${CC} ${CC_FLAGS} ${CC_SANITIZER_FLAGS} -o ${MAIN_EXECUTABLE} ./main.c ${LIB_CC_FLAGS} ${SDL_LIB}
 
 ${SDL_PATH}: ${DEPENDENCIES_FOLDER}
 	if [ ! -d "${SDL_FOLDER}" ]; then \
@@ -65,11 +52,11 @@ build/lib:
 build/test:
 	mkdir --parents ./build/test
 
-build/lib/%.o: lib/%.c ${HEADER_FILES} | build/lib ${LIBCPROJECT_PATH} ${SDL_PATH}
-	${CC} ${CC_FLAGS} ${CC_SANITIZER_FLAGS} -c $< -o $@ ${LIBCPROJECT_LIB} ${SDL_LIB}
+build/lib/%.o: lib/%.c ${HEADER_FILES} | build/lib ${SDL_PATH}
+	${CC} ${CC_FLAGS} ${CC_SANITIZER_FLAGS} -c $< -o $@ ${SDL_LIB}
 
-build/test/%.o: test/%.c ${HEADER_FILES} | build/test ${LIBCPROJECT_PATH} ${SDL_PATH}
-	${CC} ${CC_FLAGS} ${CC_SANITIZER_FLAGS} -c $< -o $@ ${LIBCPROJECT_LIB} ${SDL_LIB}
+build/test/%.o: test/%.c ${HEADER_FILES} | build/test ${SDL_PATH}
+	${CC} ${CC_FLAGS} ${CC_SANITIZER_FLAGS} -c $< -o $@ ${SDL_LIB}
 
 .PHONY: run
 run: ${MAIN_EXECUTABLE}
@@ -78,11 +65,8 @@ run: ${MAIN_EXECUTABLE}
 .PHONY: test
 test: ${LIB} $(addprefix build/, ${TEST_OBJECTS})
 	mkdir --parents ./bin
-	${CC} ${CC_FLAGS} ${CC_SANITIZER_FLAGS} -o ${TEST_EXECUTABLE} $(addprefix build/, ${TEST_OBJECTS}) ${LIB_CC_FLAGS} ${LIBCPROJECT_LIB} ${SDL_LIB}
+	${CC} ${CC_FLAGS} ${CC_SANITIZER_FLAGS} -o ${TEST_EXECUTABLE} $(addprefix build/, ${TEST_OBJECTS}) ${LIB_CC_FLAGS} ${SDL_LIB}
 	./${TEST_EXECUTABLE} ${ARGS}
-
-.PHONY: libcproject
-libcproject: ${LIBCPROJECT_PATH}
 
 .PHONY: sdl
 sdl: ${SDL_PATH}

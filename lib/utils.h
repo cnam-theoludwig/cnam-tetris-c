@@ -1,5 +1,5 @@
-#ifndef __TETRIS_RANDOM__
-#define __TETRIS_RANDOM__
+#ifndef __TETRIS_UTILS__
+#define __TETRIS_UTILS__
 
 #include <stdlib.h>
 
