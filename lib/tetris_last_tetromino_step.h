@@ -13,4 +13,8 @@ void tetris_last_tetromino_step_left(struct Tetris* tetris);
 
 void tetris_last_tetromino_step_right(struct Tetris* tetris);
 
+void tetris_last_tetromino_step_rotate_right(struct Tetris* tetris);
+
+void tetris_last_tetromino_step_rotate_left(struct Tetris* tetris);
+
 #endif

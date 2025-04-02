@@ -3,7 +3,11 @@
 void tetris_ui_render_grid(SDL_Renderer* renderer, struct Tetris* tetris) {
   for (size_t row = 0; row < GRID_HEIGHT; row++) {
     for (size_t column = 0; column < GRID_WIDTH; column++) {
-      SDL_Rect rect = {column * TETRIS_BLOCK_SIZE, row * TETRIS_BLOCK_SIZE, TETRIS_BLOCK_SIZE, TETRIS_BLOCK_SIZE};
+      SDL_Rect rect = {
+          column * TETRIS_BLOCK_SIZE,
+          row * TETRIS_BLOCK_SIZE,
+          TETRIS_BLOCK_SIZE,
+          TETRIS_BLOCK_SIZE};
       switch (tetris->grid[row][column]->type) {
         case TETROMINO_LINE:
           SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
@@ -43,7 +47,13 @@ int tetris_ui() {
     return EXIT_FAILURE;
   }
 
-  SDL_Window* window = SDL_CreateWindow("Tetris", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, TETRIS_WINDOW_WIDTH, TETRIS_WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+  SDL_Window* window = SDL_CreateWindow(
+      "Tetris",
+      SDL_WINDOWPOS_CENTERED,
+      SDL_WINDOWPOS_CENTERED,
+      TETRIS_WINDOW_WIDTH,
+      TETRIS_WINDOW_HEIGHT,
+      SDL_WINDOW_SHOWN);
   if (!window) {
     SDL_Quit();
     return EXIT_FAILURE;
@@ -59,7 +69,8 @@ int tetris_ui() {
   SDL_AudioSpec wav_spec;
   Uint32 wav_length;
   Uint8* wav_buffer;
-  if (SDL_LoadWAV("assets/music.wav", &wav_spec, &wav_buffer, &wav_length) == NULL) {
+  if (SDL_LoadWAV("assets/music.wav", &wav_spec, &wav_buffer, &wav_length) ==
+      NULL) {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
@@ -98,6 +109,14 @@ int tetris_ui() {
             tetris_last_tetromino_step_left(tetris);
             break;
           case SDLK_DOWN:
+            tetris_last_tetromino_step_rotate_right(tetris);
+            tetris_last_tetromino_step_down(tetris);
+            break;
+          case SDLK_UP:
+            tetris_last_tetromino_step_rotate_left(tetris);
+            tetris_last_tetromino_step_down(tetris);
+            break;
+          case SDLK_SPACE:
             while (tetris_last_tetromino_step_down(tetris)) {
             }
             break;
