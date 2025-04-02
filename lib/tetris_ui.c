@@ -39,7 +39,7 @@ void tetris_ui_render_grid(SDL_Renderer* renderer, struct Tetris* tetris) {
 
 int tetris_ui() {
   printf("Tetris game\n");
-  if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+  if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
     return EXIT_FAILURE;
   }
 
@@ -55,6 +55,28 @@ int tetris_ui() {
     SDL_Quit();
     return EXIT_FAILURE;
   }
+
+  SDL_AudioSpec wav_spec;
+  Uint32 wav_length;
+  Uint8* wav_buffer;
+  if (SDL_LoadWAV("assets/music.wav", &wav_spec, &wav_buffer, &wav_length) == NULL) {
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+    return EXIT_FAILURE;
+  }
+
+  SDL_AudioDeviceID device = SDL_OpenAudioDevice(NULL, 0, &wav_spec, NULL, 0);
+  if (device == 0) {
+    SDL_FreeWAV(wav_buffer);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+    return EXIT_FAILURE;
+  }
+
+  SDL_QueueAudio(device, wav_buffer, wav_length);
+  SDL_PauseAudioDevice(device, 0);
 
   struct Tetris* tetris = tetris_init();
   tetris_add_tetromino(tetris, tetris_get_tetromino_random());
@@ -98,17 +120,15 @@ int tetris_ui() {
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
-
     tetris_ui_render_grid(renderer, tetris);
-
     SDL_RenderPresent(renderer);
-    // SDL_Delay(1);
   }
 
   tetris_free(tetris);
+  SDL_CloseAudioDevice(device);
+  SDL_FreeWAV(wav_buffer);
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
   SDL_Quit();
-
   return EXIT_SUCCESS;
 }
