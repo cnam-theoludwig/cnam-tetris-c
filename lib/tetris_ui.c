@@ -75,6 +75,10 @@ int tetris_ui() {
           case SDLK_LEFT:
             tetris_last_tetromino_step_left(tetris);
             break;
+          case SDLK_DOWN:
+            while (tetris_last_tetromino_step_down(tetris)) {
+            }
+            break;
         }
       }
     }
