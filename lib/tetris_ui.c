@@ -86,7 +86,11 @@ int tetris_ui() {
     Uint32 current_time = SDL_GetTicks();
     if (current_time - last_drop_time >= 500) {
       if (!tetris_last_tetromino_step_down(tetris)) {
-        tetris_add_tetromino(tetris, tetris_get_tetromino_random());
+        if (!tetris_add_tetromino(tetris, tetris_get_tetromino_random())) {
+          tetris_free(tetris);
+          tetris = tetris_init();
+          tetris_add_tetromino(tetris, tetris_get_tetromino_random());
+        }
       }
       tetris_destroy_line(tetris);
       last_drop_time = current_time;
