@@ -1,6 +1,7 @@
 #ifndef __TETRIS_UI__
 #define __TETRIS_UI__
 
+#include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>

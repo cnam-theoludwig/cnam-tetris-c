@@ -12,4 +12,6 @@ void tetris_struct_test();
 
 void tetris_init_test();
 
+void tetris_get_level_test();
+
 #endif

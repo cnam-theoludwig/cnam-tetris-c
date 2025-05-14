@@ -18,6 +18,13 @@
 #define TETROMINO_Z 'Z'
 #define TETROMINO_S 'S'
 
+#define SCORE_SINGLE 40
+#define SCORE_DOUBLE 100
+#define SCORE_TRIPLE 300
+#define SCORE_TETRIS 1200
+
+#define TETRIS_LEVEL_STEP 10
+
 typedef uint8_t byte_t;
 
 typedef char* string_t;
@@ -28,6 +35,8 @@ typedef double float64_t;
 struct Tetris {
   struct TetrisBlock*** grid;
   size_t score;
+  size_t destroyed_lines_count;
+
   size_t last_occurence;
   byte_t last_type;
   size_t last_pivot_x;
@@ -46,5 +55,7 @@ struct Tetris* tetris_init();
 void tetris_free(struct Tetris* tetris);
 
 struct Tetris* tetris_copy(struct Tetris* tetris);
+
+size_t tetris_get_level(struct Tetris* tetris);
 
 #endif

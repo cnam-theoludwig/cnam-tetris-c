@@ -90,7 +90,22 @@ int tetris_ui() {
   SDL_PauseAudioDevice(device, 0);
 
   struct Tetris* tetris = tetris_init();
-  tetris_add_tetromino(tetris, tetris_get_tetromino_random());
+  // tetris_add_tetromino(tetris, tetris_get_tetromino_random());
+  for (size_t index_column = 0; index_column < GRID_WIDTH - 2; index_column += 1) {
+    tetris->grid[GRID_HEIGHT - 1][index_column]->type = TETROMINO_SQUARE;
+    tetris->grid[GRID_HEIGHT - 1][index_column]->occurence = 1;
+    tetris->last_occurence += 1;
+
+    tetris->grid[GRID_HEIGHT - 2][index_column]->type = TETROMINO_SQUARE;
+    tetris->grid[GRID_HEIGHT - 2][index_column]->occurence = 1;
+    tetris->last_occurence += 1;
+  }
+
+  tetris_add_tetromino(tetris, TETROMINO_SQUARE);
+  tetris_last_tetromino_step_right(tetris);
+  tetris_last_tetromino_step_right(tetris);
+  tetris_last_tetromino_step_right(tetris);
+  tetris_last_tetromino_step_right(tetris);
 
   bool running = true;
   SDL_Event event;
@@ -115,11 +130,6 @@ int tetris_ui() {
             tetris_last_tetromino_step_rotate_left(tetris);
             break;
           case SDLK_DOWN:
-            tetris_last_tetromino_step_rotate_right(tetris);
-            tetris_last_tetromino_step_down(tetris);
-            break;
-          case SDLK_UP:
-            tetris_last_tetromino_step_rotate_left(tetris);
             tetris_last_tetromino_step_down(tetris);
             break;
           case SDLK_SPACE:
@@ -131,15 +141,25 @@ int tetris_ui() {
     }
 
     Uint32 current_time = SDL_GetTicks();
-    if (current_time - last_drop_time >= 500) {
-      if (!tetris_last_tetromino_step_down(tetris)) {
-        if (!tetris_add_tetromino(tetris, tetris_get_tetromino_random())) {
-          tetris_free(tetris);
-          tetris = tetris_init();
-          tetris_add_tetromino(tetris, tetris_get_tetromino_random());
-        }
+
+    float level = (float)tetris_get_level(tetris);
+    float drop_delay_sec = powf((0.8f - ((level - 1) * 0.007f)), level - 1);
+    Uint32 drop_delay_ms = (Uint32)(drop_delay_sec * 1000.0f);
+
+    if (current_time - last_drop_time >= drop_delay_ms) {
+      bool is_posed = !tetris_last_tetromino_step_down(tetris);
+
+      if (is_posed) {
+        tetris_destroy_line(tetris);
       }
-      tetris_destroy_line(tetris);
+
+      bool is_game_over = is_posed && !tetris_add_tetromino(tetris, tetris_get_tetromino_random());
+      if (is_game_over) {
+        tetris_free(tetris);
+        tetris = tetris_init();
+        tetris_add_tetromino(tetris, tetris_get_tetromino_random());
+      }
+
       last_drop_time = current_time;
     }
 

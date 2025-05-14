@@ -14,7 +14,9 @@ void tetris_destroy_single_line(struct Tetris* tetris, size_t row) {
   }
 }
 
-void tetris_destroy_line(struct Tetris* tetris) {
+size_t tetris_destroy_line(struct Tetris* tetris) {
+  size_t count = 0;
+
   for (size_t row = 0; row < GRID_HEIGHT; row++) {
     bool is_complete = true;
 
@@ -25,8 +27,28 @@ void tetris_destroy_line(struct Tetris* tetris) {
       }
     }
     if (is_complete) {
+      count += 1;
       tetris_destroy_single_line(tetris, row);
+      tetris->destroyed_lines_count++;
       row--;
     }
   }
+  switch (count) {
+    case 0:
+      break;
+    case 1:
+      tetris->score += (tetris_get_level(tetris) + 1) * SCORE_SINGLE;
+      break;
+    case 2:
+      tetris->score += (tetris_get_level(tetris) + 1) * SCORE_DOUBLE;
+      break;
+    case 3:
+      tetris->score += (tetris_get_level(tetris) + 1) * SCORE_TRIPLE;
+      break;
+    default:
+      tetris->score += (tetris_get_level(tetris) + 1) * SCORE_TETRIS;
+      break;
+  }
+
+  return count;
 }

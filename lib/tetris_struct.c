@@ -6,8 +6,6 @@ struct Tetris* tetris_init() {
     perror("Error (tetris_init)");
     exit(EXIT_FAILURE);
   }
-  tetris->last_occurence = 0;
-
   tetris->grid = malloc(sizeof(byte_t*) * GRID_HEIGHT);
   if (tetris->grid == NULL) {
     perror("Error (tetris_init)");
@@ -31,6 +29,14 @@ struct Tetris* tetris_init() {
       tetris->grid[row][column] = block;
     }
   }
+
+  tetris->score = 0;
+  tetris->destroyed_lines_count = 0;
+
+  tetris->last_occurence = 0;
+  tetris->last_type = 0;
+  tetris->last_pivot_x = 0;
+  tetris->last_pivot_y = 0;
 
   return tetris;
 }
@@ -58,12 +64,23 @@ void tetris_free(struct Tetris* tetris) {
 
 struct Tetris* tetris_copy(struct Tetris* tetris) {
   struct Tetris* copy_tetris = tetris_init();
-  copy_tetris->last_occurence = tetris->last_occurence;
   for (size_t row = 0; row < GRID_HEIGHT; row++) {
     for (size_t column = 0; column < GRID_WIDTH; column++) {
       copy_tetris->grid[row][column]->type = tetris->grid[row][column]->type;
       copy_tetris->grid[row][column]->occurence = tetris->grid[row][column]->occurence;
     }
   }
+  copy_tetris->score = tetris->score;
+  copy_tetris->destroyed_lines_count = tetris->destroyed_lines_count;
+
+  copy_tetris->last_occurence = tetris->last_occurence;
+  copy_tetris->last_type = tetris->last_type;
+  copy_tetris->last_pivot_x = tetris->last_pivot_x;
+  copy_tetris->last_pivot_y = tetris->last_pivot_y;
+
   return copy_tetris;
+}
+
+size_t tetris_get_level(struct Tetris* tetris) {
+  return tetris->destroyed_lines_count / TETRIS_LEVEL_STEP;
 }
