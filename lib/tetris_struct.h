@@ -30,8 +30,8 @@ struct Tetris {
   size_t score;
   size_t last_occurence;
   byte_t last_type;
-  int last_pivot_x;
-  int last_pivot_y;
+  size_t last_pivot_x;
+  size_t last_pivot_y;
 };
 
 struct TetrisBlock {
