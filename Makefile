@@ -12,7 +12,7 @@ LIB_OBJECTS = $(patsubst %.c, %.o, $(LIB_SOURCES))
 DEPENDENCIES_FOLDER = ./dependencies
 
 SDL_REPO = https://github.com/libsdl-org/SDL.git
-SDL_VERSION = release-2.32.2
+SDL_VERSION = release-2.32.6
 SDL_FOLDER = ${DEPENDENCIES_FOLDER}/SDL
 SDL_BUILD_FOLDER = ${SDL_FOLDER}/build
 SDL_PATH = ${SDL_BUILD_FOLDER}/libSDL2.a
@@ -40,7 +40,7 @@ ${SDL_PATH}: ${DEPENDENCIES_FOLDER}
 		git clone ${SDL_REPO} ${SDL_FOLDER}; \
 		git -C ${SDL_FOLDER} checkout ${SDL_VERSION}; \
 		mkdir --parents ${SDL_BUILD_FOLDER}; \
-		cd ${SDL_BUILD_FOLDER} && cmake .. && make -j$(nproc); \
+		cd ${SDL_BUILD_FOLDER} && cmake .. && $(MAKE) -j$(nproc) || true; \
 	fi
 
 ${DEPENDENCIES_FOLDER}:

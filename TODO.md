@@ -1,7 +1,7 @@
 # TODO
 
 - [x] Corriger la rotation
-- [ ] `Makefile`, continuer à compiler même s'il y a une erreur lors de la compilation de SDL
+- [x] `Makefile`, continuer à compiler même s'il y a une erreur lors de la compilation de SDL
 - [ ] Mise en place d'un score
 - [ ] Améliorer l'UI avec SDL
   - [ ] Couleurs, pas de fond noir, et ne dois pas prendre toute la fenêtre (+ afffichage du score)
