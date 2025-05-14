@@ -29,6 +29,9 @@ struct Tetris {
   struct TetrisBlock*** grid;
   size_t score;
   size_t last_occurence;
+  byte_t last_type;
+  int last_pivot_x;
+  int last_pivot_y;
 };
 
 struct TetrisBlock {
