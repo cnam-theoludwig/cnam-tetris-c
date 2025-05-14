@@ -7,8 +7,7 @@ bool tetris_last_tetromino_step_down(struct Tetris* tetris) {
     for (int column = GRID_WIDTH - 1; column >= 0; column--) {
       if (tetris->grid[row][column]->occurence == tetris->last_occurence) {
         if (row + 1 >= GRID_HEIGHT ||
-            (tetris->grid[row + 1][column]->type != TETROMINO_EMPTY &&
-             tetris->grid[row + 1][column]->occurence != tetris->last_occurence)) {
+            (tetris->grid[row + 1][column]->type != TETROMINO_EMPTY && tetris->grid[row + 1][column]->occurence != tetris->last_occurence)) {
           can_move = false;
           break;
         }

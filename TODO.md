@@ -1,6 +1,6 @@
 # TODO
 
-- [ ] Corriger la rotation
+- [x] Corriger la rotation
 - [ ] `Makefile`, continuer à compiler même s'il y a une erreur lors de la compilation de SDL
 - [ ] Mise en place d'un score
 - [ ] Améliorer l'UI avec SDL
@@ -9,4 +9,4 @@
   - [ ] Bouton pause
   - [ ] Menu pause (Modifier volume, reprendre, quitter)
 - [ ] Prévisualisation de où va tomber la pièce
-- [ ] Partie 1v1
+- [ ] Partie 1v1 contre l'ordinateur
