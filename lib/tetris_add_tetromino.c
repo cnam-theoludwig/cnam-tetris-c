@@ -4,6 +4,7 @@ bool tetris_add_tetromino(struct Tetris* tetris, byte_t type) {
   size_t row = 0;
   size_t column = GRID_WIDTH / 2;
   tetris->last_occurence += 1;
+  tetris->last_type = type;
 
   bool has_space = true;
 
@@ -25,6 +26,9 @@ bool tetris_add_tetromino(struct Tetris* tetris, byte_t type) {
 
       tetris->grid[row][column + 1]->type = type;
       tetris->grid[row][column + 1]->occurence = tetris->last_occurence;
+
+      tetris->last_pivot_x = column;
+      tetris->last_pivot_y = row;
       break;
 
     case TETROMINO_SQUARE:
@@ -44,6 +48,9 @@ bool tetris_add_tetromino(struct Tetris* tetris, byte_t type) {
 
       tetris->grid[row + 1][column]->type = type;
       tetris->grid[row + 1][column]->occurence = tetris->last_occurence;
+
+      tetris->last_pivot_x = column;
+      tetris->last_pivot_y = row;
       break;
 
     case TETROMINO_T:
@@ -63,6 +70,9 @@ bool tetris_add_tetromino(struct Tetris* tetris, byte_t type) {
 
       tetris->grid[row][column + 1]->type = type;
       tetris->grid[row][column + 1]->occurence = tetris->last_occurence;
+
+      tetris->last_pivot_x = column;
+      tetris->last_pivot_y = row;
       break;
 
     case TETROMINO_L:
@@ -82,6 +92,9 @@ bool tetris_add_tetromino(struct Tetris* tetris, byte_t type) {
 
       tetris->grid[row][column + 1]->type = type;
       tetris->grid[row][column + 1]->occurence = tetris->last_occurence;
+
+      tetris->last_pivot_x = column;
+      tetris->last_pivot_y = row;
       break;
 
     case TETROMINO_J:
@@ -101,6 +114,9 @@ bool tetris_add_tetromino(struct Tetris* tetris, byte_t type) {
 
       tetris->grid[row][column + 1]->type = type;
       tetris->grid[row][column + 1]->occurence = tetris->last_occurence;
+
+      tetris->last_pivot_x = column;
+      tetris->last_pivot_y = row;
       break;
 
     case TETROMINO_Z:
@@ -120,6 +136,9 @@ bool tetris_add_tetromino(struct Tetris* tetris, byte_t type) {
 
       tetris->grid[row + 1][column + 1]->type = type;
       tetris->grid[row + 1][column + 1]->occurence = tetris->last_occurence;
+
+      tetris->last_pivot_x = column;
+      tetris->last_pivot_y = row;
       break;
 
     case TETROMINO_S:
@@ -139,6 +158,9 @@ bool tetris_add_tetromino(struct Tetris* tetris, byte_t type) {
 
       tetris->grid[row + 1][column]->type = type;
       tetris->grid[row + 1][column]->occurence = tetris->last_occurence;
+
+      tetris->last_pivot_x = column;
+      tetris->last_pivot_y = row;
       break;
   }
 

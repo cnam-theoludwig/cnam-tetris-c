@@ -108,6 +108,12 @@ int tetris_ui() {
           case SDLK_LEFT:
             tetris_last_tetromino_step_left(tetris);
             break;
+          case SDLK_r:
+            tetris_last_tetromino_step_rotate_right(tetris);
+            break;
+          case SDLK_l:
+            tetris_last_tetromino_step_rotate_left(tetris);
+            break;
           case SDLK_DOWN:
             tetris_last_tetromino_step_rotate_right(tetris);
             tetris_last_tetromino_step_down(tetris);
