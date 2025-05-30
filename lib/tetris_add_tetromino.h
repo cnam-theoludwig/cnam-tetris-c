@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+
 #include "tetris_struct.h"
 #include "utils.h"
 

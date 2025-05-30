@@ -95,7 +95,7 @@ ${SDL_TTF_INSTALLED_STAMP}: ${SDL_INSTALLED_STAMP}
 		echo "Initializing SDL_ttf submodules (freetype, harfbuzz)..."; \
 		git -C ${SDL_TTF_FOLDER} submodule update --init --recursive; \
 	elif [ ! -d "${SDL_TTF_FOLDER}/external/freetype" ] || [ ! -f "${SDL_TTF_FOLDER}/external/freetype/CMakeLists.txt" ] || \
-	     [ ! -d "${SDL_TTF_FOLDER}/external/harfbuzz" ] || [ ! -f "${SDL_TTF_FOLDER}/external/harfbuzz/CMakeLists.txt" ]; then \
+			[ ! -d "${SDL_TTF_FOLDER}/external/harfbuzz" ] || [ ! -f "${SDL_TTF_FOLDER}/external/harfbuzz/CMakeLists.txt" ]; then \
 		echo "SDL_ttf source folder found, but submodules appear to be missing or incomplete. Re-initializing submodules..."; \
 		git -C ${SDL_TTF_FOLDER} submodule update --init --recursive --force; \
 	else \
