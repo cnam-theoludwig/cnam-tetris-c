@@ -81,7 +81,7 @@ ${SDL_IMAGE_INSTALLED_STAMP}: ${SDL_INSTALLED_STAMP}
 		git clone --depth 1 --branch ${SDL_IMAGE_VERSION} ${SDL_IMAGE_REPO} ${SDL_IMAGE_FOLDER}; \
 	fi
 	@mkdir --parents ${SDL_IMAGE_BUILD_FOLDER}
-	@cd ${SDL_IMAGE_BUILD_FOLDER} && cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_PREFIX_PATH=${INSTALL_PREFIX} -DBUILD_SHARED_LIBS=ON -DSDL_SAMPLES=OFF -DSDL2_IMAGE_WEBP=OFF -DSDL2_IMAGE_AVIF=OFF -DSDL2_IMAGE_JXL=OFF -DSDL2_IMAGE_QOI=OFF -DSDL_TESTS=OFF
+	@cd ${SDL_IMAGE_BUILD_FOLDER} && cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_PREFIX_PATH=${INSTALL_PREFIX} -DBUILD_SHARED_LIBS:BOOL=ON -DSDL2IMAGE_SAMPLES:BOOL=OFF -DSDL2IMAGE_WEBP:BOOL=OFF -DSDL2IMAGE_AVIF:BOOL=OFF -DSDL2IMAGE_JXL:BOOL=OFF -DSDL2IMAGE_QOI:BOOL=OFF -DSDL2IMAGE_TESTS:BOOL=OFF
 	@$(MAKE) -C ${SDL_IMAGE_BUILD_FOLDER} -j$$(nproc)
 	@$(MAKE) -C ${SDL_IMAGE_BUILD_FOLDER} install
 	@touch ${SDL_IMAGE_INSTALLED_STAMP}
@@ -90,10 +90,38 @@ ${SDL_TTF_INSTALLED_STAMP}: ${SDL_INSTALLED_STAMP}
 	@command -v git >/dev/null 2>&1 || { echo >&2 "git is not installed. Aborting."; exit 1; }
 	@command -v cmake >/dev/null 2>&1 || { echo >&2 "cmake is not installed. Aborting."; exit 1; }
 	@if [ ! -d "${SDL_TTF_FOLDER}" ]; then \
-		git clone --depth 1 --branch ${SDL_TTF_VERSION} --recurse-submodules ${SDL_TTF_REPO} ${SDL_TTF_FOLDER}; \
+		echo "Cloning SDL_ttf repository ${SDL_TTF_REPO} branch ${SDL_TTF_VERSION}..."; \
+		git clone --branch ${SDL_TTF_VERSION} ${SDL_TTF_REPO} ${SDL_TTF_FOLDER}; \
+		echo "Initializing SDL_ttf submodules (freetype, harfbuzz)..."; \
+		git -C ${SDL_TTF_FOLDER} submodule update --init --recursive; \
+	elif [ ! -d "${SDL_TTF_FOLDER}/external/freetype" ] || [ ! -f "${SDL_TTF_FOLDER}/external/freetype/CMakeLists.txt" ] || \
+	     [ ! -d "${SDL_TTF_FOLDER}/external/harfbuzz" ] || [ ! -f "${SDL_TTF_FOLDER}/external/harfbuzz/CMakeLists.txt" ]; then \
+		echo "SDL_ttf source folder found, but submodules appear to be missing or incomplete. Re-initializing submodules..."; \
+		git -C ${SDL_TTF_FOLDER} submodule update --init --recursive --force; \
+	else \
+		echo "SDL_ttf source and submodules appear to be present."; \
 	fi
+	@echo "Verifying presence of FreeType submodule CMakeLists.txt..."
+	@if [ ! -f "${SDL_TTF_FOLDER}/external/freetype/CMakeLists.txt" ]; then \
+		echo "Error: SDL_ttf FreeType submodule CMakeLists.txt not found at ${SDL_TTF_FOLDER}/external/freetype/CMakeLists.txt after submodule update!"; \
+		ls -la "${SDL_TTF_FOLDER}/external/"; \
+		ls -la "${SDL_TTF_FOLDER}/external/freetype/"; \
+		exit 1; \
+	else \
+		echo "FreeType submodule CMakeLists.txt found."; \
+	fi
+	@echo "Cleaning previous SDL_ttf build directory (if any)..."
+	@rm -rf ${SDL_TTF_BUILD_FOLDER}
 	@mkdir --parents ${SDL_TTF_BUILD_FOLDER}
-	@cd ${SDL_TTF_BUILD_FOLDER} && cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_PREFIX_PATH=${INSTALL_PREFIX} -DBUILD_SHARED_LIBS=ON -DSDLTTF_SAMPLES=OFF -DSDLTTF_VENDORED=ON
+	@echo "Configuring SDL_ttf with CMake..."
+	@cd ${SDL_TTF_BUILD_FOLDER} && cmake .. \
+		-DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
+		-DCMAKE_PREFIX_PATH=${INSTALL_PREFIX} \
+		-DBUILD_SHARED_LIBS:BOOL=ON \
+		-DSDL2TTF_VENDORED:BOOL=ON \
+		-DSDL2TTF_HARFBUZZ:BOOL=OFF \
+		-DSDL2TTF_SAMPLES:BOOL=OFF \
+		-DCMAKE_POLICY_VERSION_MINIMUM=3.5
 	@$(MAKE) -C ${SDL_TTF_BUILD_FOLDER} -j$$(nproc)
 	@$(MAKE) -C ${SDL_TTF_BUILD_FOLDER} install
 	@touch ${SDL_TTF_INSTALLED_STAMP}
