@@ -1,4 +1,4 @@
-#include "./tetris_add_tetromino.h"
+#include "tetris_add_tetromino.h"
 
 static byte_t last_tetromino = 0;
 

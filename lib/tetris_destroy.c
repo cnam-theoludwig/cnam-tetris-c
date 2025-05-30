@@ -1,4 +1,4 @@
-#include "./tetris_destroy.h"
+#include "tetris_destroy.h"
 
 void tetris_destroy_single_line(struct Tetris* tetris, size_t row) {
   for (size_t r = row; r > 0; r--) {

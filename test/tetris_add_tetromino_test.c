@@ -12,7 +12,8 @@ void tetris_add_tetromino_test() {
 
 void tetris_add_tetromino_line_test() {
   struct Tetris* tetris = tetris_init();
-  tetris_add_tetromino(tetris, TETROMINO_LINE);
+  tetris->next_tetromino_type = TETROMINO_LINE;
+  tetris_add_tetromino(tetris);
 
   assert(tetris->grid[0][0]->type == TETROMINO_EMPTY);
   assert(tetris->grid[0][0]->occurence == 0);
@@ -50,7 +51,8 @@ void tetris_add_tetromino_line_test() {
 
 void tetris_add_tetromino_square_test() {
   struct Tetris* tetris = tetris_init();
-  tetris_add_tetromino(tetris, TETROMINO_SQUARE);
+  tetris->next_tetromino_type = TETROMINO_SQUARE;
+  tetris_add_tetromino(tetris);
 
   assert(tetris->grid[0][0]->type == TETROMINO_EMPTY);
   assert(tetris->grid[0][0]->occurence == 0);
@@ -82,7 +84,8 @@ void tetris_add_tetromino_square_test() {
 
 void tetris_add_tetromino_t_test() {
   struct Tetris* tetris = tetris_init();
-  tetris_add_tetromino(tetris, TETROMINO_T);
+  tetris->next_tetromino_type = TETROMINO_T;
+  tetris_add_tetromino(tetris);
 
   assert(tetris->grid[0][0]->type == TETROMINO_EMPTY);
   assert(tetris->grid[0][0]->occurence == 0);
@@ -114,7 +117,8 @@ void tetris_add_tetromino_t_test() {
 
 void tetris_add_tetromino_l_test() {
   struct Tetris* tetris = tetris_init();
-  tetris_add_tetromino(tetris, TETROMINO_L);
+  tetris->next_tetromino_type = TETROMINO_L;
+  tetris_add_tetromino(tetris);
 
   assert(tetris->grid[0][0]->type == TETROMINO_EMPTY);
   assert(tetris->grid[0][0]->occurence == 0);
@@ -146,7 +150,8 @@ void tetris_add_tetromino_l_test() {
 
 void tetris_add_tetromino_j_test() {
   struct Tetris* tetris = tetris_init();
-  tetris_add_tetromino(tetris, TETROMINO_J);
+  tetris->next_tetromino_type = TETROMINO_J;
+  tetris_add_tetromino(tetris);
 
   assert(tetris->grid[0][0]->type == TETROMINO_EMPTY);
   assert(tetris->grid[0][0]->occurence == 0);
@@ -178,7 +183,8 @@ void tetris_add_tetromino_j_test() {
 
 void tetris_add_tetromino_z_test() {
   struct Tetris* tetris = tetris_init();
-  tetris_add_tetromino(tetris, TETROMINO_Z);
+  tetris->next_tetromino_type = TETROMINO_Z;
+  tetris_add_tetromino(tetris);
 
   assert(tetris->grid[0][0]->type == TETROMINO_EMPTY);
   assert(tetris->grid[0][0]->occurence == 0);
@@ -210,7 +216,8 @@ void tetris_add_tetromino_z_test() {
 
 void tetris_add_tetromino_s_test() {
   struct Tetris* tetris = tetris_init();
-  tetris_add_tetromino(tetris, TETROMINO_S);
+  tetris->next_tetromino_type = TETROMINO_S;
+  tetris_add_tetromino(tetris);
 
   assert(tetris->grid[0][0]->type == TETROMINO_EMPTY);
   assert(tetris->grid[0][0]->occurence == 0);

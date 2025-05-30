@@ -4,9 +4,9 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-#include "./tetris_struct.h"
-#include "./utils.h"
+#include <time.h>
+#include "tetris_struct.h"
+#include "utils.h"
 
 /**
  * @brief

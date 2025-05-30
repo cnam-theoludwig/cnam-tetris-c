@@ -1,6 +1,6 @@
 LIBRARY_NAME = tetris
 CC = gcc
-CC_FLAGS = -Wall -Wextra -Wfloat-equal -Wundef -Wno-unused-variable -std=c17 -pedantic -pedantic-errors -O3 -I./ -I./dependencies/SDL/include -I./dependencies/SDL_ttf/include
+CC_FLAGS = -Wall -Wextra -Wfloat-equal -Wundef -Wno-unused-variable -std=c17 -pedantic -pedantic-errors -O3 -I./ -I./dependencies/SDL/include -I./dependencies/SDL_ttf/include -I./dependencies/SDL_image/include
 CC_SANITIZER_FLAGS = -fsanitize=address -fsanitize=undefined
 
 HEADER_FILES = $(wildcard lib/*.h) ./${LIBRARY_NAME}.h
@@ -25,6 +25,13 @@ SDL_TTF_BUILD_FOLDER = ${SDL_TTF_FOLDER}/build
 SDL_TTF_PATH = ${SDL_TTF_BUILD_FOLDER}/libSDL2_ttf.a
 SDL_TTF_LIB = -L${SDL_TTF_BUILD_FOLDER} -lSDL2_ttf
 
+SDL_IMAGE_REPO = https://github.com/libsdl-org/SDL_image.git
+SDL_IMAGE_VERSION = release-2.8.2
+SDL_IMAGE_FOLDER = ${DEPENDENCIES_FOLDER}/SDL_image
+SDL_IMAGE_BUILD_FOLDER = ${SDL_IMAGE_FOLDER}/build
+SDL_IMAGE_PATH = ${SDL_IMAGE_BUILD_FOLDER}/libSDL2_image.a
+SDL_IMAGE_LIB = -L${SDL_IMAGE_BUILD_FOLDER} -lSDL2_image
+
 MAIN_EXECUTABLE = bin/tetris
 TEST_EXECUTABLE = bin/test
 
@@ -38,9 +45,9 @@ ${LIB}: $(addprefix build/, ${LIB_OBJECTS})
 	rm --force ${LIB}
 	ar -rcs ${LIB} $(addprefix build/, ${LIB_OBJECTS})
 
-${MAIN_EXECUTABLE}: ${LIB} ./main.c ${SDL_PATH} ${SDL_TTF_PATH}
+${MAIN_EXECUTABLE}: ${LIB} ./main.c ${SDL_PATH} ${SDL_TTF_PATH} ${SDL_IMAGE_PATH}
 	mkdir --parents ./bin
-	${CC} ${CC_FLAGS} ${CC_SANITIZER_FLAGS} -o ${MAIN_EXECUTABLE} ./main.c ${LIB_CC_FLAGS} ${SDL_LIB} ${SDL_TTF_LIB}
+	${CC} ${CC_FLAGS} ${CC_SANITIZER_FLAGS} -o ${MAIN_EXECUTABLE} ./main.c ${LIB_CC_FLAGS} ${SDL_LIB} ${SDL_TTF_LIB} ${SDL_IMAGE_LIB}
 
 ${SDL_PATH}: ${DEPENDENCIES_FOLDER}
 	if [ ! -d "${SDL_FOLDER}" ]; then \
@@ -50,7 +57,15 @@ ${SDL_PATH}: ${DEPENDENCIES_FOLDER}
 		cd ${SDL_BUILD_FOLDER} && cmake .. && $(MAKE) -j$(nproc) || true; \
 	fi
 
-${SDL_TTF_PATH}: ${SDL_PATH}
+${SDL_IMAGE_PATH}: ${DEPENDENCIES_FOLDER}
+	if [ ! -d "${SDL_IMAGE_FOLDER}" ]; then \
+		git clone ${SDL_IMAGE_REPO} ${SDL_IMAGE_FOLDER}; \
+		git -C ${SDL_IMAGE_FOLDER} checkout ${SDL_IMAGE_VERSION}; \
+		mkdir --parents ${SDL_IMAGE_BUILD_FOLDER}; \
+		cd ${SDL_IMAGE_BUILD_FOLDER} && cmake .. -DSDL2_IMAGE_SAMPLES=OFF -DSDL2_IMAGE_WEBP=OFF -DSDL2_IMAGE_AVIF=OFF && $(MAKE) -j$(nproc) || true; \
+	fi
+
+${SDL_TTF_PATH}: ${SDL_PATH} ${SDL_IMAGE_PATH}
 	if [ ! -d "${SDL_TTF_FOLDER}" ]; then \
 		git clone ${SDL_TTF_REPO} ${SDL_TTF_FOLDER}; \
 		git -C ${SDL_TTF_FOLDER} checkout ${SDL_TTF_VERSION}; \
@@ -67,11 +82,11 @@ build/lib:
 build/test:
 	mkdir --parents ./build/test
 
-build/lib/%.o: lib/%.c ${HEADER_FILES} | build/lib ${SDL_PATH} ${SDL_TTF_PATH}
-	${CC} ${CC_FLAGS} ${CC_SANITIZER_FLAGS} -c $< -o $@ ${SDL_LIB} ${SDL_TTF_LIB}
+build/lib/%.o: lib/%.c ${HEADER_FILES} | build/lib ${SDL_PATH} ${SDL_TTF_PATH} ${SDL_IMAGE_PATH}
+	${CC} ${CC_FLAGS} ${CC_SANITIZER_FLAGS} -c $< -o $@
 
-build/test/%.o: test/%.c ${HEADER_FILES} | build/test ${SDL_PATH} ${SDL_TTF_PATH}
-	${CC} ${CC_FLAGS} ${CC_SANITIZER_FLAGS} -c $< -o $@ ${SDL_LIB} ${SDL_TTF_LIB}
+build/test/%.o: test/%.c ${HEADER_FILES} | build/test ${SDL_PATH} ${SDL_TTF_PATH} ${SDL_IMAGE_PATH}
+	${CC} ${CC_FLAGS} ${CC_SANITIZER_FLAGS} -c $< -o $@
 
 .PHONY: run
 run: ${MAIN_EXECUTABLE}
@@ -80,11 +95,11 @@ run: ${MAIN_EXECUTABLE}
 .PHONY: test
 test: ${LIB} $(addprefix build/, ${TEST_OBJECTS})
 	mkdir --parents ./bin
-	${CC} ${CC_FLAGS} ${CC_SANITIZER_FLAGS} -o ${TEST_EXECUTABLE} $(addprefix build/, ${TEST_OBJECTS}) ${LIB_CC_FLAGS} ${SDL_LIB} ${SDL_TTF_LIB}
+	${CC} ${CC_FLAGS} ${CC_SANITIZER_FLAGS} -o ${TEST_EXECUTABLE} $(addprefix build/, ${TEST_OBJECTS}) ${LIB_CC_FLAGS} ${SDL_LIB} ${SDL_TTF_LIB} ${SDL_IMAGE_LIB}
 	./${TEST_EXECUTABLE} ${ARGS}
 
 .PHONY: sdl
-sdl: ${SDL_PATH} ${SDL_TTF_PATH}
+sdl: ${SDL_PATH} ${SDL_TTF_PATH} ${SDL_IMAGE_PATH}
 
 .PHONY: lint
 lint:
@@ -94,9 +109,9 @@ lint:
 clean:
 	rm --recursive --force ./build ./bin
 
-.PHONY: clean-deps
-clean-deps:
-	rm --recursive --force ${DEPENDENCIES_FOLDER}
+.PHONY: clean_dependencies
+clean_dependencies:
+	rm --force --recursive ${SDL_FOLDER} ${SDL_TTF_FOLDER} ${SDL_IMAGE_FOLDER}
 
 .PHONY: clean-all
-clean-all: clean clean-deps
+clean-all: clean clean_dependencies

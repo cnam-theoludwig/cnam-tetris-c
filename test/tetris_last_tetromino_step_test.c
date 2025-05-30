@@ -12,7 +12,8 @@ void tetris_last_tetromino_step_test() {
 void tetris_last_tetromino_step_down_test() {
   struct Tetris* tetris = tetris_init();
 
-  tetris_add_tetromino(tetris, TETROMINO_S);
+  tetris->next_tetromino_type = TETROMINO_S;
+  tetris_add_tetromino(tetris);
   while (tetris_last_tetromino_step_down(tetris)) {
   }
 
@@ -38,14 +39,17 @@ void tetris_last_tetromino_step_down_test() {
   tetris_free(tetris);
   printf("tetris_last_tetromino_step_down_test\n");
 }
+
 void tetris_last_tetromino_step_down_with_add_test() {
   struct Tetris* tetris = tetris_init();
 
-  tetris_add_tetromino(tetris, TETROMINO_S);
+  tetris->next_tetromino_type = TETROMINO_S;
+  tetris_add_tetromino(tetris);
   while (tetris_last_tetromino_step_down(tetris)) {
   }
 
-  tetris_add_tetromino(tetris, TETROMINO_SQUARE);
+  tetris->next_tetromino_type = TETROMINO_SQUARE;
+  tetris_add_tetromino(tetris);
 
   assert(tetris->grid[0][3]->type == TETROMINO_EMPTY);
   assert(tetris->grid[0][3]->occurence == 0);
@@ -65,14 +69,17 @@ void tetris_last_tetromino_step_down_with_add_test() {
   tetris_free(tetris);
   printf("tetris_last_tetromino_step_down_with_add_test\n");
 }
+
 void tetris_last_tetromino_step_down_with_collisions_test() {
   struct Tetris* tetris = tetris_init();
 
-  tetris_add_tetromino(tetris, TETROMINO_SQUARE);
+  tetris->next_tetromino_type = TETROMINO_SQUARE;
+  tetris_add_tetromino(tetris);
   while (tetris_last_tetromino_step_down(tetris)) {
   }
 
-  tetris_add_tetromino(tetris, TETROMINO_LINE);
+  tetris->next_tetromino_type = TETROMINO_LINE;
+  tetris_add_tetromino(tetris);
   while (tetris_last_tetromino_step_down(tetris)) {
   }
 
@@ -125,7 +132,8 @@ void tetris_last_tetromino_step_down_with_collisions_test() {
 void tetris_last_tetromino_step_left_test() {
   struct Tetris* tetris = tetris_init();
 
-  tetris_add_tetromino(tetris, TETROMINO_SQUARE);
+  tetris->next_tetromino_type = TETROMINO_SQUARE;
+  tetris_add_tetromino(tetris);
 
   tetris_last_tetromino_step_left(tetris);
   assert(tetris->grid[0][3]->type == TETROMINO_SQUARE);
@@ -199,7 +207,8 @@ void tetris_last_tetromino_step_left_test() {
 void tetris_last_tetromino_step_right_test() {
   struct Tetris* tetris = tetris_init();
 
-  tetris_add_tetromino(tetris, TETROMINO_SQUARE);
+  tetris->next_tetromino_type = TETROMINO_SQUARE;
+  tetris_add_tetromino(tetris);
 
   tetris_last_tetromino_step_right(tetris);
   assert(tetris->grid[0][5]->type == TETROMINO_SQUARE);

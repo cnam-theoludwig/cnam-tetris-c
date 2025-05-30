@@ -1,5 +1,5 @@
-#include "./tetris_struct.h"
-#include "./tetris_add_tetromino.h"
+#include "tetris_struct.h"
+#include "tetris_add_tetromino.h"
 
 struct Tetris* tetris_init() {
   struct Tetris* tetris = malloc(sizeof(struct Tetris));
@@ -39,6 +39,9 @@ struct Tetris* tetris_init() {
   tetris->last_pivot_x = 0;
   tetris->last_pivot_y = 0;
   tetris->next_tetromino_type = tetris_get_tetromino_random();
+  tetris->paused = false;
+  tetris->game_over = false;
+  tetris->selected_pause_option = 0;
 
   return tetris;
 }

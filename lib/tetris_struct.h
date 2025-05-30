@@ -37,6 +37,9 @@ struct Tetris {
   size_t score;
   size_t destroyed_lines_count;
   byte_t next_tetromino_type;
+  bool paused;
+  bool game_over;
+  int selected_pause_option;
 
   size_t last_occurence;
   byte_t last_type;

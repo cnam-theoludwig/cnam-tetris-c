@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "./tetris_struct.h"
+#include "tetris_struct.h"
 
 size_t tetris_destroy_line(struct Tetris* tetris);
 

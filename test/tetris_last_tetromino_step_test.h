@@ -6,7 +6,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "tetris.h"
+#include "../lib/tetris_add_tetromino.h"
+#include "../lib/tetris_last_tetromino_step.h"
+#include "../lib/tetris_struct.h"
 
 void tetris_last_tetromino_step_test();
 

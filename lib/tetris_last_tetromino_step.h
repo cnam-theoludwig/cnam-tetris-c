@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "./tetris_struct.h"
+#include "tetris_struct.h"
 
 /**
  * @brief Move the last tetromino down if possible. Updates the pivot.

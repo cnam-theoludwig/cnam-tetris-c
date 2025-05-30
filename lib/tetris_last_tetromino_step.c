@@ -1,4 +1,4 @@
-#include "./tetris_last_tetromino_step.h"
+#include "tetris_last_tetromino_step.h"
 
 bool tetris_last_tetromino_step_down(struct Tetris* tetris) {
   bool can_move = true;
