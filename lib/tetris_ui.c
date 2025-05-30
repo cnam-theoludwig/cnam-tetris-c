@@ -301,17 +301,15 @@ TetrisUIAction tetris_ui(struct Tetris* tetris) {
       TETRIS_WINDOW_HEIGHT,
       SDL_WINDOW_SHOWN);
   if (!window) {
-    TTF_Quit();
-    SDL_Quit();
-    return EXIT_FAILURE;
+    fprintf(stderr, "tetris_ui: Failed to create window: %s\n", SDL_GetError());
+    return UI_ACTION_QUIT;
   }
 
   SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
   if (!renderer) {
     SDL_DestroyWindow(window);
-    TTF_Quit();
-    SDL_Quit();
-    return EXIT_FAILURE;
+    fprintf(stderr, "tetris_ui: Failed to create renderer: %s\n", SDL_GetError());
+    return UI_ACTION_QUIT;
   }
 
   SDL_AudioSpec wav_spec;
@@ -320,9 +318,8 @@ TetrisUIAction tetris_ui(struct Tetris* tetris) {
   if (SDL_LoadWAV("assets/music.wav", &wav_spec, &wav_buffer, &wav_length) == NULL) {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
-    TTF_Quit();
-    SDL_Quit();
-    return EXIT_FAILURE;
+    fprintf(stderr, "tetris_ui: Failed to load WAV: %s\n", SDL_GetError());
+    return UI_ACTION_QUIT;
   }
 
   SDL_AudioDeviceID device = SDL_OpenAudioDevice(NULL, 0, &wav_spec, NULL, 0);
@@ -330,9 +327,8 @@ TetrisUIAction tetris_ui(struct Tetris* tetris) {
     SDL_FreeWAV(wav_buffer);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
-    TTF_Quit();
-    SDL_Quit();
-    return EXIT_FAILURE;
+    fprintf(stderr, "tetris_ui: Failed to open audio device: %s\n", SDL_GetError());
+    return UI_ACTION_QUIT;
   }
 
   SDL_QueueAudio(device, wav_buffer, wav_length);
@@ -556,6 +552,7 @@ TetrisUIAction tetris_ui(struct Tetris* tetris) {
   SDL_FreeWAV(wav_buffer);
   if (pause_button_texture) {
     SDL_DestroyTexture(pause_button_texture);
+    pause_button_texture = NULL;
   }
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);

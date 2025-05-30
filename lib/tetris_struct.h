@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "tetris_add_tetromino.h"
+
 #define GRID_WIDTH 10
 #define GRID_HEIGHT 20
 

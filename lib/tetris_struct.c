@@ -1,5 +1,4 @@
 #include "tetris_struct.h"
-#include "tetris_add_tetromino.h"
 
 struct Tetris* tetris_init() {
   struct Tetris* tetris = malloc(sizeof(struct Tetris));
