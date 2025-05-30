@@ -15,7 +15,7 @@
  * @param type
  * @return bool true if the tetromino has space to be added, false otherwise.
  */
-bool tetris_add_tetromino(struct Tetris* tetris, byte_t type);
+bool tetris_add_tetromino(struct Tetris* tetris);
 
 byte_t tetris_get_tetromino_random();
 

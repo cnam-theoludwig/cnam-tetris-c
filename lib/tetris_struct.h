@@ -36,6 +36,7 @@ struct Tetris {
   struct TetrisBlock*** grid;
   size_t score;
   size_t destroyed_lines_count;
+  byte_t next_tetromino_type;
 
   size_t last_occurence;
   byte_t last_type;

@@ -1,6 +1,11 @@
 #include "./tetris_add_tetromino.h"
 
-bool tetris_add_tetromino(struct Tetris* tetris, byte_t type) {
+static byte_t last_tetromino = 0;
+
+bool tetris_add_tetromino(struct Tetris* tetris) {
+  byte_t type = tetris->next_tetromino_type;
+  tetris->next_tetromino_type = tetris_get_tetromino_random();
+
   size_t row = 0;
   size_t column = GRID_WIDTH / 2;
   tetris->last_occurence += 1;
@@ -170,6 +175,18 @@ bool tetris_add_tetromino(struct Tetris* tetris, byte_t type) {
 byte_t tetris_get_tetromino_random() {
   byte_t tetrominos[] = {TETROMINO_LINE, TETROMINO_SQUARE, TETROMINO_T, TETROMINO_L, TETROMINO_Z, TETROMINO_J, TETROMINO_S};
   size_t tetrominos_size = sizeof(tetrominos) / sizeof(tetrominos[0]);
-  byte_t tetromino = tetrominos[random_size_t(0, tetrominos_size - 1)];
+
+  byte_t available_tetrominos[7];
+  size_t available_count = 0;
+
+  for (size_t i = 0; i < tetrominos_size; i++) {
+    if (tetrominos[i] != last_tetromino) {
+      available_tetrominos[available_count] = tetrominos[i];
+      available_count++;
+    }
+  }
+
+  byte_t tetromino = available_tetrominos[random_size_t(0, available_count - 1)];
+  last_tetromino = tetromino;
   return tetromino;
 }
