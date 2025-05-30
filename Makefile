@@ -15,21 +15,21 @@ SDL_REPO = https://github.com/libsdl-org/SDL.git
 SDL_VERSION = release-2.32.6
 SDL_FOLDER = ${DEPENDENCIES_FOLDER}/SDL
 SDL_BUILD_FOLDER = ${SDL_FOLDER}/build
-SDL_PATH = ${SDL_BUILD_FOLDER}/libSDL2.a
+SDL_PATH = ${SDL_BUILD_FOLDER}/libSDL2.so
 SDL_LIB = -L${SDL_BUILD_FOLDER} -lSDL2 -ldl -lpthread
 
 SDL_TTF_REPO = https://github.com/libsdl-org/SDL_ttf.git
 SDL_TTF_VERSION = release-2.20.2
 SDL_TTF_FOLDER = ${DEPENDENCIES_FOLDER}/SDL_ttf
 SDL_TTF_BUILD_FOLDER = ${SDL_TTF_FOLDER}/build
-SDL_TTF_PATH = ${SDL_TTF_BUILD_FOLDER}/libSDL2_ttf.a
+SDL_TTF_PATH = ${SDL_TTF_BUILD_FOLDER}/libSDL2_ttf.so
 SDL_TTF_LIB = -L${SDL_TTF_BUILD_FOLDER} -lSDL2_ttf
 
 SDL_IMAGE_REPO = https://github.com/libsdl-org/SDL_image.git
 SDL_IMAGE_VERSION = release-2.8.2
 SDL_IMAGE_FOLDER = ${DEPENDENCIES_FOLDER}/SDL_image
 SDL_IMAGE_BUILD_FOLDER = ${SDL_IMAGE_FOLDER}/build
-SDL_IMAGE_PATH = ${SDL_IMAGE_BUILD_FOLDER}/libSDL2_image.a
+SDL_IMAGE_PATH = ${SDL_IMAGE_BUILD_FOLDER}/libSDL2_image.so
 SDL_IMAGE_LIB = -L${SDL_IMAGE_BUILD_FOLDER} -lSDL2_image
 
 MAIN_EXECUTABLE = bin/tetris
@@ -109,9 +109,9 @@ lint:
 clean:
 	rm --recursive --force ./build ./bin
 
-.PHONY: clean_dependencies
-clean_dependencies:
-	rm --force --recursive ${SDL_FOLDER} ${SDL_TTF_FOLDER} ${SDL_IMAGE_FOLDER}
+.PHONY: clean-deps
+clean-deps:
+	rm --force --recursive ${DEPENDENCIES_FOLDER}
 
 .PHONY: clean-all
-clean-all: clean clean_dependencies
+clean-all: clean clean-deps
