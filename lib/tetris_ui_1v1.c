@@ -86,8 +86,7 @@ TetrisUIAction tetris_ui_1v1(struct Tetris* p1, struct Tetris* p2) {
             paused = true;
             break;
         }
-      } else if (paused && event.type == SDL_KEYDOWN
-                 && (event.key.keysym.sym == SDLK_p || event.key.keysym.sym == SDLK_ESCAPE)) {
+      } else if (paused && event.type == SDL_KEYDOWN && (event.key.keysym.sym == SDLK_p || event.key.keysym.sym == SDLK_ESCAPE)) {
         paused = false;
       }
     }

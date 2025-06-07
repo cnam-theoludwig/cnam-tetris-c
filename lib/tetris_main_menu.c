@@ -19,8 +19,7 @@ GameMode run_tetris_main_menu(SDL_Window** window,
     if (TTF_Init() == -1) { SDL_Quit(); return MODE_NONE; }
     if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) { TTF_Quit(); SDL_Quit(); return MODE_NONE; }
 
-    *window = SDL_CreateWindow("Tetris", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                               WINDOW_W, WINDOW_H, SDL_WINDOW_SHOWN);
+    *window = SDL_CreateWindow("Tetris", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_W, WINDOW_H, SDL_WINDOW_SHOWN);
     if (!*window) return MODE_NONE;
     *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED);
     if (!*renderer) { SDL_DestroyWindow(*window); return MODE_NONE; }
