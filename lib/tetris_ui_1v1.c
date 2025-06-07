@@ -59,8 +59,10 @@ TetrisUIAction tetris_ui_1v1(struct Tetris* p1, struct Tetris* p2) {
         break;
       }
       if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
-        int mx = event.button.x, my = event.button.y;
-        if (!paused && mx >= pause_button_rect.x && mx <= pause_button_rect.x + pause_button_rect.w && my >= pause_button_rect.y && my <= pause_button_rect.y + pause_button_rect.h) {
+        int mx = event.button.x;
+        int my = event.button.y;
+        if (!paused && mx >= pause_button_rect.x && mx <= pause_button_rect.x + pause_button_rect.w &&
+            my >= pause_button_rect.y && my <= pause_button_rect.y + pause_button_rect.h) {
           paused = true;
         }
       }
@@ -81,12 +83,13 @@ TetrisUIAction tetris_ui_1v1(struct Tetris* p1, struct Tetris* p2) {
           case SDLK_e:
             tetris_last_tetromino_step_rotate_right(p1);
             break;
-          case SDLK_SPACE:
-            while (tetris_last_tetromino_step_down(p1))
-              ;
+          case SDLK_SPACE: {
+            while (tetris_last_tetromino_step_down(p1)) {
+            }
             tetris_destroy_line(p1);
             tetris_add_tetromino(p1);
             break;
+          }
           case SDLK_LEFT:
             tetris_last_tetromino_step_left(p2);
             break;
@@ -102,18 +105,20 @@ TetrisUIAction tetris_ui_1v1(struct Tetris* p1, struct Tetris* p2) {
           case SDLK_LCTRL:
             tetris_last_tetromino_step_rotate_left(p2);
             break;
-          case SDLK_RETURN:
-            while (tetris_last_tetromino_step_down(p2))
-              ;
+          case SDLK_RETURN: {
+            while (tetris_last_tetromino_step_down(p2)) {
+            }
             tetris_destroy_line(p2);
             tetris_add_tetromino(p2);
             break;
+          }
           case SDLK_p:
           case SDLK_ESCAPE:
             paused = true;
             break;
         }
-      } else if (paused && event.type == SDL_KEYDOWN && (event.key.keysym.sym == SDLK_p || event.key.keysym.sym == SDLK_ESCAPE)) {
+      } else if (paused && event.type == SDL_KEYDOWN &&
+                 (event.key.keysym.sym == SDLK_p || event.key.keysym.sym == SDLK_ESCAPE)) {
         paused = false;
       }
     }
@@ -167,9 +172,15 @@ TetrisUIAction tetris_ui_1v1(struct Tetris* p1, struct Tetris* p2) {
     SDL_RenderPresent(renderer);
   }
 
-  if (audio_device) SDL_CloseAudioDevice(audio_device);
-  if (wav_buffer) SDL_FreeWAV(wav_buffer);
-  if (pause_button_texture) SDL_DestroyTexture(pause_button_texture);
+  if (audio_device) {
+    SDL_CloseAudioDevice(audio_device);
+  }
+  if (wav_buffer) {
+    SDL_FreeWAV(wav_buffer);
+  }
+  if (pause_button_texture) {
+    SDL_DestroyTexture(pause_button_texture);
+  }
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
   return UI_ACTION_QUIT;
