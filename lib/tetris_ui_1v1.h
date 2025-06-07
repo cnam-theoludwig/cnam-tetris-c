@@ -7,7 +7,6 @@
 // Prototype de la fonction utilitaire définie dans tetris_ui.c
 SDL_Texture* load_texture_from_file(const char* path, SDL_Renderer* renderer);
 
-
 /**
  * @brief  Lance un mode Tetris 1v1 local avec écrans splittés
  *
@@ -17,4 +16,4 @@ SDL_Texture* load_texture_from_file(const char* path, SDL_Renderer* renderer);
  */
 TetrisUIAction tetris_ui_1v1(struct Tetris* p1, struct Tetris* p2);
 
-#endif // __TETRIS_UI_1V1__
+#endif  // __TETRIS_UI_1V1__

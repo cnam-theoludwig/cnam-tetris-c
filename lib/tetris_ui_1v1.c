@@ -54,35 +54,62 @@ TetrisUIAction tetris_ui_1v1(struct Tetris* p1, struct Tetris* p2) {
 
   while (running) {
     while (SDL_PollEvent(&event)) {
-      if (event.type == SDL_QUIT) { running = false; break; }
+      if (event.type == SDL_QUIT) {
+        running = false;
+        break;
+      }
       if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
         int mx = event.button.x, my = event.button.y;
-        if (!paused && mx >= pause_button_rect.x && mx <= pause_button_rect.x + pause_button_rect.w
-            && my >= pause_button_rect.y && my <= pause_button_rect.y + pause_button_rect.h) {
+        if (!paused && mx >= pause_button_rect.x && mx <= pause_button_rect.x + pause_button_rect.w && my >= pause_button_rect.y && my <= pause_button_rect.y + pause_button_rect.h) {
           paused = true;
         }
       }
       if (!paused && event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
-          case SDLK_q: tetris_last_tetromino_step_left(p1); break;
-          case SDLK_d: tetris_last_tetromino_step_right(p1); break;
-          case SDLK_s: tetris_last_tetromino_step_down(p1); break;
-          case SDLK_a: tetris_last_tetromino_step_rotate_left(p1); break;
-          case SDLK_e: tetris_last_tetromino_step_rotate_right(p1); break;
+          case SDLK_q:
+            tetris_last_tetromino_step_left(p1);
+            break;
+          case SDLK_d:
+            tetris_last_tetromino_step_right(p1);
+            break;
+          case SDLK_s:
+            tetris_last_tetromino_step_down(p1);
+            break;
+          case SDLK_a:
+            tetris_last_tetromino_step_rotate_left(p1);
+            break;
+          case SDLK_e:
+            tetris_last_tetromino_step_rotate_right(p1);
+            break;
           case SDLK_SPACE:
-            while (tetris_last_tetromino_step_down(p1));
-            tetris_destroy_line(p1); tetris_add_tetromino(p1);
+            while (tetris_last_tetromino_step_down(p1))
+              ;
+            tetris_destroy_line(p1);
+            tetris_add_tetromino(p1);
             break;
-          case SDLK_LEFT: tetris_last_tetromino_step_left(p2); break;
-          case SDLK_RIGHT: tetris_last_tetromino_step_right(p2); break;
-          case SDLK_DOWN: tetris_last_tetromino_step_down(p2); break;
-          case SDLK_RCTRL: tetris_last_tetromino_step_rotate_right(p2); break;
-          case SDLK_LCTRL: tetris_last_tetromino_step_rotate_left(p2); break;
+          case SDLK_LEFT:
+            tetris_last_tetromino_step_left(p2);
+            break;
+          case SDLK_RIGHT:
+            tetris_last_tetromino_step_right(p2);
+            break;
+          case SDLK_DOWN:
+            tetris_last_tetromino_step_down(p2);
+            break;
+          case SDLK_RCTRL:
+            tetris_last_tetromino_step_rotate_right(p2);
+            break;
+          case SDLK_LCTRL:
+            tetris_last_tetromino_step_rotate_left(p2);
+            break;
           case SDLK_RETURN:
-            while (tetris_last_tetromino_step_down(p2));
-            tetris_destroy_line(p2); tetris_add_tetromino(p2);
+            while (tetris_last_tetromino_step_down(p2))
+              ;
+            tetris_destroy_line(p2);
+            tetris_add_tetromino(p2);
             break;
-          case SDLK_p: case SDLK_ESCAPE:
+          case SDLK_p:
+          case SDLK_ESCAPE:
             paused = true;
             break;
         }
@@ -96,11 +123,17 @@ TetrisUIAction tetris_ui_1v1(struct Tetris* p1, struct Tetris* p2) {
       float drop1 = powf(0.85f, (float)tetris_get_level(p1));
       float drop2 = powf(0.85f, (float)tetris_get_level(p2));
       if (now - last_drop_time_p1 >= (Uint32)(drop1 * 600)) {
-        if (!tetris_last_tetromino_step_down(p1)) { tetris_destroy_line(p1); tetris_add_tetromino(p1); }
+        if (!tetris_last_tetromino_step_down(p1)) {
+          tetris_destroy_line(p1);
+          tetris_add_tetromino(p1);
+        }
         last_drop_time_p1 = now;
       }
       if (now - last_drop_time_p2 >= (Uint32)(drop2 * 600)) {
-        if (!tetris_last_tetromino_step_down(p2)) { tetris_destroy_line(p2); tetris_add_tetromino(p2); }
+        if (!tetris_last_tetromino_step_down(p2)) {
+          tetris_destroy_line(p2);
+          tetris_add_tetromino(p2);
+        }
         last_drop_time_p2 = now;
       }
     }
