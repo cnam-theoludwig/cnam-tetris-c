@@ -7,5 +7,7 @@
 #include "lib/tetris_struct.h"
 #include "lib/tetris_ui.h"
 #include "lib/utils.h"
+#include "lib/tetris_ui_1v1.h"
+#include "lib/tetris_main_menu.h"
 
 #endif

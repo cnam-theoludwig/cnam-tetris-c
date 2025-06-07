@@ -1,59 +1,60 @@
 #include "tetris.h"
+#include <time.h>
 
 int main() {
-  srand(time(NULL));
+    srand((unsigned)time(NULL));
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
+        SDL_Quit();
+        return 1;
+    }
+    if (TTF_Init() == -1) {
+        SDL_Quit();
+        return 1;
+    }
+    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
+        TTF_Quit();
+        SDL_Quit();
+        return 1;
+    }
 
-  if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
-    fprintf(stderr, "Failed to initialize SDL: %s\n", SDL_GetError());
-    return EXIT_FAILURE;
-  }
+    SDL_Window* menu_win = NULL;
+    SDL_Renderer* menu_ren = NULL;
+    GameMode mode = run_tetris_main_menu(&menu_win, &menu_ren);
+    if (menu_ren) SDL_DestroyRenderer(menu_ren);
+    if (menu_win) SDL_DestroyWindow(menu_win);
 
-  if (TTF_Init() == -1) {
-    fprintf(stderr, "Failed to initialize TTF: %s\n", TTF_GetError());
-    SDL_Quit();
-    return EXIT_FAILURE;
-  }
+    if (mode == MODE_SOLO) {
+        struct Tetris* game = tetris_init();
+        while (true) {
+            TetrisUIAction act = tetris_ui(game);
+            if (act == UI_ACTION_RESTART) {
+                tetris_free(game);
+                game = tetris_init();
+            } else if (act == UI_ACTION_QUIT) {
+                break;
+            }
+        }
+        tetris_free(game);
+    } else if (mode == MODE_1V1) {
+        struct Tetris* p1 = tetris_init();
+        struct Tetris* p2 = tetris_init();
+        while (true) {
+            TetrisUIAction act = tetris_ui_1v1(p1, p2);
+            if (act == UI_ACTION_RESTART) {
+                tetris_free(p1);
+                tetris_free(p2);
+                p1 = tetris_init();
+                p2 = tetris_init();
+            } else if (act == UI_ACTION_QUIT) {
+                break;
+            }
+        }
+        tetris_free(p1);
+        tetris_free(p2);
+    }
 
-  int img_flags = IMG_INIT_PNG;
-  if (!(IMG_Init(img_flags) & img_flags)) {
-    fprintf(stderr, "Failed to initialize SDL_image: %s\n", IMG_GetError());
+    IMG_Quit();
     TTF_Quit();
     SDL_Quit();
-    return EXIT_FAILURE;
-  }
-
-  struct Tetris* tetris = tetris_init();
-  if (!tetris) {
-    fprintf(stderr, "Failed to initialize Tetris struct.\n");
-    return EXIT_FAILURE;
-  }
-
-  bool game_running = true;
-  while (game_running) {
-    TetrisUIAction action = tetris_ui(tetris);
-
-    switch (action) {
-      case UI_ACTION_RESTART:
-        tetris_free(tetris);
-        tetris = tetris_init();
-        if (!tetris) {
-          fprintf(stderr, "Failed to re-initialize Tetris struct after restart.\n");
-          game_running = false;
-        }
-        break;
-      case UI_ACTION_QUIT:
-        game_running = false;
-        break;
-      case UI_ACTION_CONTINUE:
-        break;
-    }
-  }
-
-  tetris_free(tetris);
-
-  IMG_Quit();
-  TTF_Quit();
-  SDL_Quit();
-
-  return EXIT_SUCCESS;
+    return 0;
 }
