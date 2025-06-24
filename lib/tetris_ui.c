@@ -21,39 +21,7 @@ void tetris_ui_render_grid(SDL_Renderer* renderer, struct Tetris* tetris) {
       SDL_SetRenderDrawColor(renderer, 25, 25, 25, 255);
       SDL_RenderFillRect(renderer, &rect);
 
-      switch (tetris->grid[row][column]->type) {
-        case TETROMINO_LINE:
-          SDL_SetRenderDrawColor(renderer, 0, 180, 180, 255);
-          break;
-        case TETROMINO_SQUARE:
-          SDL_SetRenderDrawColor(renderer, 180, 180, 0, 255);
-          break;
-        case TETROMINO_T:
-          SDL_SetRenderDrawColor(renderer, 100, 0, 100, 255);
-          break;
-        case TETROMINO_L:
-          SDL_SetRenderDrawColor(renderer, 200, 120, 0, 255);
-          break;
-        case TETROMINO_J:
-          SDL_SetRenderDrawColor(renderer, 0, 0, 180, 255);
-          break;
-        case TETROMINO_Z:
-          SDL_SetRenderDrawColor(renderer, 180, 0, 0, 255);
-          break;
-        case TETROMINO_S:
-          SDL_SetRenderDrawColor(renderer, 0, 150, 0, 255);
-          break;
-        case TETROMINO_GARBAGE:
-          SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
-          break;
-        default:
-          SDL_SetRenderDrawColor(renderer, 15, 15, 15, 255);
-          break;
-      }
-
-      SDL_RenderFillRect(renderer, &rect);
-      SDL_SetRenderDrawColor(renderer, 40, 40, 40, 255);
-      SDL_RenderDrawRect(renderer, &rect);
+      tetris_ui_render_block(renderer, rect.x, rect.y, rect.w, tetris->grid[row][column]->type);
     }
   }
 }
@@ -120,8 +88,8 @@ void tetris_ui_render_level(SDL_Renderer* renderer, struct Tetris* tetris) {
   TTF_CloseFont(font);
 }
 
-static void tetris_ui_render_next_tetromino_block(SDL_Renderer* renderer, int x, int y, byte_t type) {
-  SDL_Rect block_rect = {x, y, NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE};
+void tetris_ui_render_block(SDL_Renderer* renderer, int x, int y, int block_size, byte_t type) {
+  SDL_Rect block_rect = {x, y, block_size, block_size};
 
   switch (type) {
     case TETROMINO_LINE:
@@ -145,8 +113,12 @@ static void tetris_ui_render_next_tetromino_block(SDL_Renderer* renderer, int x,
     case TETROMINO_S:
       SDL_SetRenderDrawColor(renderer, 0, 150, 0, 255);
       break;
+    case TETROMINO_GARBAGE:
+      SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
+      break;
     default:
-      return;
+      SDL_SetRenderDrawColor(renderer, 15, 15, 15, 255);
+      break;
   }
   SDL_RenderFillRect(renderer, &block_rect);
   SDL_SetRenderDrawColor(renderer, 40, 40, 40, 255);
@@ -191,7 +163,7 @@ void tetris_ui_render_pause_menu(SDL_Renderer* renderer, struct Tetris* tetris) 
   SDL_DestroyTexture(texture);
   SDL_FreeSurface(surface);
 
-  const char* menu_item_texts[] = {"Resume", "Restart", "Quit"};
+  static const char* menu_item_texts[] = {"Resume", "Restart", "Main menu"};
   int icon_size = 48;
   int text_height_approx = 40;
   int item_spacing = 20;
@@ -256,46 +228,46 @@ void tetris_ui_render_next_tetromino(SDL_Renderer* renderer, struct Tetris* tetr
 
   switch (next_type) {
     case TETROMINO_LINE:
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 0 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, next_type);
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 1 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, next_type);
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 2 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, next_type);
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 3 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 0 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 1 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 2 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 3 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
       break;
     case TETROMINO_SQUARE:
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 1 * NEXT_PIECE_BLOCK_SIZE, base_y + 0 * NEXT_PIECE_BLOCK_SIZE, next_type);
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 2 * NEXT_PIECE_BLOCK_SIZE, base_y + 0 * NEXT_PIECE_BLOCK_SIZE, next_type);
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 1 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, next_type);
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 2 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 1 * NEXT_PIECE_BLOCK_SIZE, base_y + 0 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 2 * NEXT_PIECE_BLOCK_SIZE, base_y + 0 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 1 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 2 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
       break;
     case TETROMINO_T:
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 0 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, next_type);
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 1 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, next_type);
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 2 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, next_type);
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 1 * NEXT_PIECE_BLOCK_SIZE, base_y + 0 * NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 0 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 1 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 2 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 1 * NEXT_PIECE_BLOCK_SIZE, base_y + 0 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
       break;
     case TETROMINO_L:
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 0 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, next_type);
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 1 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, next_type);
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 2 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, next_type);
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 2 * NEXT_PIECE_BLOCK_SIZE, base_y + 0 * NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 0 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 1 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 2 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 2 * NEXT_PIECE_BLOCK_SIZE, base_y + 0 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
       break;
     case TETROMINO_J:
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 0 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, next_type);
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 1 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, next_type);
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 2 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, next_type);
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 0 * NEXT_PIECE_BLOCK_SIZE, base_y + 0 * NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 0 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 1 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 2 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 0 * NEXT_PIECE_BLOCK_SIZE, base_y + 0 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
       break;
     case TETROMINO_Z:
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 0 * NEXT_PIECE_BLOCK_SIZE, base_y + 0 * NEXT_PIECE_BLOCK_SIZE, next_type);
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 1 * NEXT_PIECE_BLOCK_SIZE, base_y + 0 * NEXT_PIECE_BLOCK_SIZE, next_type);
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 1 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, next_type);
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 2 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 0 * NEXT_PIECE_BLOCK_SIZE, base_y + 0 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 1 * NEXT_PIECE_BLOCK_SIZE, base_y + 0 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 1 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 2 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
       break;
     case TETROMINO_S:
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 1 * NEXT_PIECE_BLOCK_SIZE, base_y + 0 * NEXT_PIECE_BLOCK_SIZE, next_type);
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 2 * NEXT_PIECE_BLOCK_SIZE, base_y + 0 * NEXT_PIECE_BLOCK_SIZE, next_type);
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 0 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, next_type);
-      tetris_ui_render_next_tetromino_block(renderer, base_x + 1 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 1 * NEXT_PIECE_BLOCK_SIZE, base_y + 0 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 2 * NEXT_PIECE_BLOCK_SIZE, base_y + 0 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 0 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
+      tetris_ui_render_block(renderer, base_x + 1 * NEXT_PIECE_BLOCK_SIZE, base_y + 1 * NEXT_PIECE_BLOCK_SIZE, NEXT_PIECE_BLOCK_SIZE, next_type);
       break;
   }
 }
@@ -436,7 +408,7 @@ TetrisUIAction tetris_ui(struct Tetris* tetris) {
                   action_result = UI_ACTION_RESTART;
                   running = false;
                   break;
-                case PAUSE_MENU_QUIT:
+                case PAUSE_MENU_MAIN_MENU:
                   action_result = UI_ACTION_QUIT;
                   running = false;
                   break;

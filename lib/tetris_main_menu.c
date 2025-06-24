@@ -13,9 +13,10 @@ static SDL_Texture* renderText(SDL_Renderer* rend, TTF_Font* font, const char* t
   return tex;
 }
 
-GameMode run_tetris_main_menu(SDL_Window** window,
-                              SDL_Renderer** renderer) {
-  if (SDL_Init(SDL_INIT_VIDEO) != 0) return MODE_NONE;
+GameMode run_tetris_main_menu(SDL_Window** window, SDL_Renderer** renderer) {
+  if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+    return MODE_NONE;
+  }
   if (TTF_Init() == -1) {
     SDL_Quit();
     return MODE_NONE;
@@ -39,9 +40,9 @@ GameMode run_tetris_main_menu(SDL_Window** window,
   SDL_Rect btn1v1 = {(WINDOW_W - BUTTON_W) / 2, 300, BUTTON_W, BUTTON_H};
   SDL_Rect btnExit = {(WINDOW_W - BUTTON_W) / 2, 420, BUTTON_W, BUTTON_H};
 
-  SDL_Texture* txtSolo = renderText(*renderer, font, "Mode Solo");
-  SDL_Texture* txt1v1 = renderText(*renderer, font, "Mode 1v1");
-  SDL_Texture* txtExit = renderText(*renderer, font, "Quitter");
+  SDL_Texture* txtSolo = renderText(*renderer, font, "Solo");
+  SDL_Texture* txt1v1 = renderText(*renderer, font, "1v1");
+  SDL_Texture* txtExit = renderText(*renderer, font, "Quit");
 
   GameMode mode = MODE_NONE;
   SDL_Event ev;
@@ -52,12 +53,13 @@ GameMode run_tetris_main_menu(SDL_Window** window,
     }
     if (ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT) {
       int x = ev.button.x, y = ev.button.y;
-      if (x >= btnSolo.x && x <= btnSolo.x + BUTTON_W && y >= btnSolo.y && y <= btnSolo.y + BUTTON_H)
+      if (x >= btnSolo.x && x <= btnSolo.x + BUTTON_W && y >= btnSolo.y && y <= btnSolo.y + BUTTON_H) {
         mode = MODE_SOLO;
-      else if (x >= btn1v1.x && x <= btn1v1.x + BUTTON_W && y >= btn1v1.y && y <= btn1v1.y + BUTTON_H)
+      } else if (x >= btn1v1.x && x <= btn1v1.x + BUTTON_W && y >= btn1v1.y && y <= btn1v1.y + BUTTON_H) {
         mode = MODE_1V1;
-      else if (x >= btnExit.x && x <= btnExit.x + BUTTON_W && y >= btnExit.y && y <= btnExit.y + BUTTON_H)
+      } else if (x >= btnExit.x && x <= btnExit.x + BUTTON_W && y >= btnExit.y && y <= btnExit.y + BUTTON_H) {
         mode = MODE_EXIT;
+      }
     }
     SDL_SetRenderDrawColor(*renderer, 26, 26, 26, 255);
     SDL_RenderClear(*renderer);

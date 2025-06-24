@@ -116,8 +116,40 @@ TetrisUIAction tetris_ui_1v1(struct Tetris* p1, struct Tetris* p2) {
             paused = true;
             break;
         }
-      } else if (paused && event.type == SDL_KEYDOWN && (event.key.keysym.sym == SDLK_p || event.key.keysym.sym == SDLK_ESCAPE)) {
-        paused = false;
+      } else if (paused && event.type == SDL_KEYDOWN) {
+        switch (event.key.keysym.sym) {
+          case SDLK_p:
+          case SDLK_ESCAPE:
+            paused = false;
+            break;
+          case SDLK_UP:
+            p1->selected_pause_option = (p1->selected_pause_option - 1 + PAUSE_MENU_OPTION_COUNT) % PAUSE_MENU_OPTION_COUNT;
+            break;
+          case SDLK_DOWN:
+            p1->selected_pause_option = (p1->selected_pause_option + 1) % PAUSE_MENU_OPTION_COUNT;
+            break;
+          case SDLK_RETURN:
+            switch (p1->selected_pause_option) {
+              case PAUSE_MENU_RESUME:
+                paused = false;
+                break;
+              case PAUSE_MENU_RESTART:
+                if (audio_device) SDL_CloseAudioDevice(audio_device);
+                if (wav_buffer) SDL_FreeWAV(wav_buffer);
+                if (pause_button_texture) SDL_DestroyTexture(pause_button_texture);
+                SDL_DestroyRenderer(renderer);
+                SDL_DestroyWindow(window);
+                return UI_ACTION_RESTART;
+              case PAUSE_MENU_MAIN_MENU:
+                if (audio_device) SDL_CloseAudioDevice(audio_device);
+                if (wav_buffer) SDL_FreeWAV(wav_buffer);
+                if (pause_button_texture) SDL_DestroyTexture(pause_button_texture);
+                SDL_DestroyRenderer(renderer);
+                SDL_DestroyWindow(window);
+                return UI_ACTION_CONTINUE;
+            }
+            break;
+        }
       }
     }
 
@@ -161,12 +193,14 @@ TetrisUIAction tetris_ui_1v1(struct Tetris* p1, struct Tetris* p2) {
     if (!paused) {
       SDL_RenderCopy(renderer, pause_button_texture, NULL, &pause_button_rect);
     } else {
-      SDL_Rect vp1 = {offset_x1, 0, TETRIS_WINDOW_WIDTH, TETRIS_WINDOW_HEIGHT};
-      SDL_Rect vp2 = {offset_x2, 0, TETRIS_WINDOW_WIDTH, TETRIS_WINDOW_HEIGHT};
-      SDL_RenderSetViewport(renderer, &vp1);
+      SDL_RenderSetViewport(renderer, NULL);
+      SDL_Rect pause_overlay = {0, 0, TETRIS_WINDOW_WIDTH * 2 + 100, TETRIS_WINDOW_HEIGHT};
+      SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+      SDL_SetRenderDrawColor(renderer, 0, 0, 0, 150);
+      SDL_RenderFillRect(renderer, &pause_overlay);
+      SDL_Rect menu_vp = {((TETRIS_WINDOW_WIDTH * 2 + 100) - TETRIS_WINDOW_WIDTH) / 2, 0, TETRIS_WINDOW_WIDTH, TETRIS_WINDOW_HEIGHT};
+      SDL_RenderSetViewport(renderer, &menu_vp);
       tetris_ui_render_pause_menu(renderer, p1);
-      SDL_RenderSetViewport(renderer, &vp2);
-      tetris_ui_render_pause_menu(renderer, p2);
       SDL_RenderSetViewport(renderer, NULL);
     }
 

@@ -48,7 +48,7 @@
 typedef enum {
   PAUSE_MENU_RESUME,
   PAUSE_MENU_RESTART,
-  PAUSE_MENU_QUIT,
+  PAUSE_MENU_MAIN_MENU,
   PAUSE_MENU_OPTION_COUNT
 } PauseMenuOption;
 
@@ -63,10 +63,14 @@ typedef enum {
 #define PAUSE_BUTTON_SIZE 40
 
 TetrisUIAction tetris_ui(struct Tetris* tetris);
+
+void tetris_ui_render_block(SDL_Renderer* renderer, int x, int y, int block_size, byte_t type);
+
 void tetris_ui_render_grid(SDL_Renderer* renderer, struct Tetris* tetris);
 void tetris_ui_render_score(SDL_Renderer* renderer, struct Tetris* tetris);
 void tetris_ui_render_level(SDL_Renderer* renderer, struct Tetris* tetris);
 void tetris_ui_render_next_tetromino(SDL_Renderer* renderer, struct Tetris* tetris);
 void tetris_ui_render_pause_menu(SDL_Renderer* renderer, struct Tetris* tetris);
+void tetris_ui_render_block(SDL_Renderer* renderer, int x, int y, int block_size, byte_t type);
 
 #endif
