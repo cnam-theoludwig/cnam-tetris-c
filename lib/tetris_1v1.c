@@ -4,8 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-size_t tetris_1v1_handle_lines_and_attack(struct Tetris* self,
-                                          struct Tetris* opponent) {
+size_t tetris_1v1_handle_lines_and_attack(struct Tetris* self, struct Tetris* opponent) {
     size_t cleared = tetris_destroy_line(self);
     size_t garbage = 0;
     switch (cleared) {
@@ -23,14 +22,12 @@ size_t tetris_1v1_handle_lines_and_attack(struct Tetris* self,
 
 void tetris_1v1_receive_garbage(struct Tetris* tetris, size_t lines) {
   for (size_t i = 0; i < lines; ++i) {
-    // décalage vers le haut
     for (size_t r = 0; r < GRID_HEIGHT-1; ++r) {
       for (size_t c = 0; c < GRID_WIDTH; ++c) {
         tetris->grid[r][c]->type = tetris->grid[r+1][c]->type;
         tetris->grid[r][c]->occurence = tetris->grid[r+1][c]->occurence;
       }
     }
-    // nouvelle ligne immuable garbage en bas
     size_t last = GRID_HEIGHT-1;
     for (size_t c = 0; c < GRID_WIDTH; ++c) {
       tetris->grid[last][c]->type = TETROMINO_GARBAGE;
