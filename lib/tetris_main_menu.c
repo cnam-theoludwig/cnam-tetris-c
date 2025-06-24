@@ -40,21 +40,22 @@ GameMode run_tetris_main_menu(SDL_Window** window, SDL_Renderer** renderer) {
   TTF_Font* title_font = TTF_OpenFont("assets/font.ttf", 72);
   TTF_Font* font = TTF_OpenFont("assets/font.ttf", 36);
 
-#define BUTTON_COUNT 3
+#define BUTTON_COUNT 4
   const int spacing = 30;
   int total_height = BUTTON_COUNT * BUTTON_H + (BUTTON_COUNT - 1) * spacing;
   int start_y = (WINDOW_H - total_height) / 2 + 60;
 
   SDL_Rect btn_rects[BUTTON_COUNT];
-  btn_rects[0] = (SDL_Rect){(WINDOW_W - BUTTON_W) / 2, start_y, BUTTON_W, BUTTON_H};
-  btn_rects[1] = (SDL_Rect){(WINDOW_W - BUTTON_W) / 2, start_y + BUTTON_H + spacing, BUTTON_W, BUTTON_H};
-  btn_rects[2] = (SDL_Rect){(WINDOW_W - BUTTON_W) / 2, start_y + 2 * (BUTTON_H + spacing), BUTTON_W, BUTTON_H};
+  for (int i = 0; i < BUTTON_COUNT; ++i) {
+    btn_rects[i] = (SDL_Rect){(WINDOW_W - BUTTON_W) / 2, start_y + i * (BUTTON_H + spacing), BUTTON_W, BUTTON_H};
+  }
 
   SDL_Texture* txtTitle = renderText(*renderer, title_font, "TETRIS");
   SDL_Texture* btn_textures[BUTTON_COUNT];
   btn_textures[0] = renderText(*renderer, font, "Solo");
   btn_textures[1] = renderText(*renderer, font, "1v1");
-  btn_textures[2] = renderText(*renderer, font, "Quit");
+  btn_textures[2] = renderText(*renderer, font, "1v1 (AI)");
+  btn_textures[3] = renderText(*renderer, font, "Quit");
 
   GameMode mode = MODE_NONE;
   GameMode selected = MODE_SOLO;
@@ -74,6 +75,8 @@ GameMode run_tetris_main_menu(SDL_Window** window, SDL_Renderer** renderer) {
           } else if (btn == 1) {
             mode = MODE_1V1;
           } else if (btn == 2) {
+            mode = MODE_1V1_AI;
+          } else if (btn == 3) {
             mode = MODE_EXIT;
           }
 
@@ -82,7 +85,7 @@ GameMode run_tetris_main_menu(SDL_Window** window, SDL_Renderer** renderer) {
       }
     }
     if (ev.type == SDL_KEYDOWN) {
-      static const GameMode menu_modes[BUTTON_COUNT] = {MODE_SOLO, MODE_1V1, MODE_EXIT};
+      static const GameMode menu_modes[BUTTON_COUNT] = {MODE_SOLO, MODE_1V1, MODE_1V1_AI, MODE_EXIT};
       size_t index = 0;
       for (size_t i = 0; i < BUTTON_COUNT; ++i) {
         if (menu_modes[i] == selected) {
@@ -115,8 +118,14 @@ GameMode run_tetris_main_menu(SDL_Window** window, SDL_Renderer** renderer) {
       SDL_RenderFillRect(*renderer, &btn_rects[btn]);
     }
     SDL_SetRenderDrawColor(*renderer, highlight.r, highlight.g, highlight.b, 255);
-    int sel_idx = (selected == MODE_SOLO) ? 0 : (selected == MODE_1V1) ? 1
-                                                                       : 2;
+    int sel_idx = 0;
+    static const GameMode menu_modes[BUTTON_COUNT] = {MODE_SOLO, MODE_1V1, MODE_1V1_AI, MODE_EXIT};
+    for (int i = 0; i < BUTTON_COUNT; ++i) {
+      if (selected == menu_modes[i]) {
+        sel_idx = i;
+        break;
+      }
+    }
     for (int i = 0; i < 3; ++i) {
       SDL_Rect border = {btn_rects[sel_idx].x + i, btn_rects[sel_idx].y + i, btn_rects[sel_idx].w - 2 * i, btn_rects[sel_idx].h - 2 * i};
       SDL_RenderDrawRect(*renderer, &border);

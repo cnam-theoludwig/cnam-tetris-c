@@ -2,7 +2,7 @@
 
 SDL_Texture* load_texture_from_file(const char* path, SDL_Renderer* renderer);
 
-TetrisUIAction tetris_ui_1v1(struct Tetris* p1, struct Tetris* p2, SDL_Window** window_in, SDL_Renderer** renderer_in) {
+TetrisUIAction tetris_ui_1v1(struct Tetris* p1, struct Tetris* p2, SDL_Window** window_in, SDL_Renderer** renderer_in, bool ai_right_player) {
   SDL_Window* window = NULL;
   SDL_Renderer* renderer = NULL;
   bool own_window = false;

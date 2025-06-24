@@ -50,14 +50,15 @@ int main() {
       if (quit_flag) {
         break;
       }
-    } else if (mode == MODE_1V1) {
+    } else if (mode == MODE_1V1 || mode == MODE_1V1_AI) {
       struct Tetris* p1 = tetris_init();
       struct Tetris* p2 = tetris_init();
       int quit_flag = 0;
       SDL_Window* game_win = NULL;
       SDL_Renderer* game_ren = NULL;
+      bool ai_right_player = (mode == MODE_1V1_AI);
       while (true) {
-        TetrisUIAction act = tetris_ui_1v1(p1, p2, &game_win, &game_ren);
+        TetrisUIAction act = tetris_ui_1v1(p1, p2, &game_win, &game_ren, ai_right_player);
         if (act == UI_ACTION_RESTART) {
           tetris_free(p1);
           tetris_free(p2);

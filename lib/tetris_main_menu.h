@@ -13,6 +13,7 @@ typedef enum {
   MODE_NONE = 0,
   MODE_SOLO,
   MODE_1V1,
+  MODE_1V1_AI,
   MODE_EXIT
 } GameMode;
 
