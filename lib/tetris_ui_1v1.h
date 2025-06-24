@@ -1,9 +1,9 @@
 #ifndef __TETRIS_UI_1V1__
 #define __TETRIS_UI_1V1__
 
+#include "tetris_1v1.h"
 #include "tetris_struct.h"
 #include "tetris_ui.h"
-#include "tetris_1v1.h"
 // Prototype de la fonction utilitaire définie dans tetris_ui.c
 SDL_Texture* load_texture_from_file(const char* path, SDL_Renderer* renderer);
 

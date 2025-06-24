@@ -3,13 +3,13 @@
 void tetris_destroy_single_line(struct Tetris* tetris, size_t row) {
   for (size_t r = row; r > 0; --r) {
     for (size_t c = 0; c < GRID_WIDTH; ++c) {
-      byte_t above = tetris->grid[r-1][c]->type;
+      byte_t above = tetris->grid[r - 1][c]->type;
       if (above == TETROMINO_GARBAGE) {
         tetris->grid[r][c]->type = TETROMINO_EMPTY;
         tetris->grid[r][c]->occurence = 0;
       } else {
         tetris->grid[r][c]->type = above;
-        tetris->grid[r][c]->occurence = tetris->grid[r-1][c]->occurence;
+        tetris->grid[r][c]->occurence = tetris->grid[r - 1][c]->occurence;
       }
     }
   }
