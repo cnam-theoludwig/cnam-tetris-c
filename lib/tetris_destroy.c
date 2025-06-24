@@ -1,22 +1,21 @@
 #include "tetris_destroy.h"
 
-void tetris_destroy_single_line(struct Tetris* tetris, size_t row) {
-  for (size_t r = row; r > 0; --r) {
-    for (size_t c = 0; c < GRID_WIDTH; ++c) {
-      byte_t above = tetris->grid[r - 1][c]->type;
+void tetris_destroy_single_line(struct Tetris* tetris, size_t row_size) {
+  for (size_t row = row_size; row > 0; --row) {
+    for (size_t column = 0; column < GRID_WIDTH; ++column) {
+      byte_t above = tetris->grid[row - 1][column]->type;
       if (above == TETROMINO_GARBAGE) {
-        tetris->grid[r][c]->type = TETROMINO_EMPTY;
-        tetris->grid[r][c]->occurence = 0;
+        tetris->grid[row][column]->type = TETROMINO_EMPTY;
+        tetris->grid[row][column]->occurence = 0;
       } else {
-        tetris->grid[r][c]->type = above;
-        tetris->grid[r][c]->occurence = tetris->grid[r - 1][c]->occurence;
+        tetris->grid[row][column]->type = above;
+        tetris->grid[row][column]->occurence = tetris->grid[row - 1][column]->occurence;
       }
     }
   }
-  // première ligne vide
-  for (size_t c = 0; c < GRID_WIDTH; ++c) {
-    tetris->grid[0][c]->type = TETROMINO_EMPTY;
-    tetris->grid[0][c]->occurence = 0;
+  for (size_t column = 0; column < GRID_WIDTH; ++column) {
+    tetris->grid[0][column]->type = TETROMINO_EMPTY;
+    tetris->grid[0][column]->occurence = 0;
   }
 }
 
@@ -32,10 +31,10 @@ size_t tetris_destroy_line(struct Tetris* tetris) {
       }
     }
     if (is_complete) {
-      ++count;
+      count += 1;
       tetris_destroy_single_line(tetris, row);
       tetris->destroyed_lines_count++;
-      --row;
+      row -= 1;
     }
   }
   switch (count) {
@@ -54,6 +53,5 @@ size_t tetris_destroy_line(struct Tetris* tetris) {
       tetris->score += (tetris_get_level(tetris) + 1) * SCORE_TETRIS;
       break;
   }
-
   return count;
 }

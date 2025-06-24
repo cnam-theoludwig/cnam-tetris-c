@@ -22,7 +22,6 @@ TetrisUIAction tetris_ui_1v1(struct Tetris* p1, struct Tetris* p2) {
     return UI_ACTION_QUIT;
   }
 
-  // Load and play music
   SDL_AudioSpec wav_spec;
   Uint32 wav_length;
   Uint8* wav_buffer;
@@ -41,7 +40,6 @@ TetrisUIAction tetris_ui_1v1(struct Tetris* p1, struct Tetris* p2) {
   SDL_Texture* pause_button_texture = load_texture_from_file("assets/pause_icon.png", renderer);
   SDL_Rect pause_button_rect = {PAUSE_BUTTON_X, PAUSE_BUTTON_Y, PAUSE_BUTTON_SIZE, PAUSE_BUTTON_SIZE};
 
-  // Spawn initial tetrominoes
   tetris_add_tetromino(p1);
   tetris_add_tetromino(p2);
 
@@ -54,14 +52,13 @@ TetrisUIAction tetris_ui_1v1(struct Tetris* p1, struct Tetris* p2) {
   int offset_x2 = TETRIS_WINDOW_WIDTH + 100;
 
   while (running) {
-    // Event handling
     while (SDL_PollEvent(&event)) {
       if (event.type == SDL_QUIT) {
         running = false;
         break;
       }
       if (!paused && event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
-        int mx = event.button.x, my = event.button.y;
+        Sint32 mx = event.button.x, my = event.button.y;
         if (mx >= pause_button_rect.x && mx <= pause_button_rect.x + pause_button_rect.w &&
             my >= pause_button_rect.y && my <= pause_button_rect.y + pause_button_rect.h) {
           paused = true;
@@ -69,21 +66,20 @@ TetrisUIAction tetris_ui_1v1(struct Tetris* p1, struct Tetris* p2) {
       }
       if (!paused && event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
-          // Player 1 controls
-          case SDLK_q:
+          case SDLK_LEFT:
             tetris_last_tetromino_step_left(p1);
             break;
-          case SDLK_d:
+          case SDLK_RIGHT:
             tetris_last_tetromino_step_right(p1);
             break;
-          case SDLK_s:
+          case SDLK_DOWN:
             tetris_last_tetromino_step_down(p1);
             break;
-          case SDLK_a:
-            tetris_last_tetromino_step_rotate_left(p1);
+          case SDLK_r:
+            tetris_last_tetromino_step_rotate_right(p1);
             break;
           case SDLK_e:
-            tetris_last_tetromino_step_rotate_right(p1);
+            tetris_last_tetromino_step_rotate_left(p1);
             break;
           case SDLK_SPACE: {
             while (tetris_last_tetromino_step_down(p1)) {
@@ -92,14 +88,14 @@ TetrisUIAction tetris_ui_1v1(struct Tetris* p1, struct Tetris* p2) {
             if (!tetris_add_tetromino(p1)) p1->game_over = true;
             break;
           }
-          // Player 2 controls
-          case SDLK_LEFT:
+
+          case SDLK_a:
             tetris_last_tetromino_step_left(p2);
             break;
-          case SDLK_RIGHT:
+          case SDLK_d:
             tetris_last_tetromino_step_right(p2);
             break;
-          case SDLK_DOWN:
+          case SDLK_s:
             tetris_last_tetromino_step_down(p2);
             break;
           case SDLK_RCTRL:
@@ -125,7 +121,6 @@ TetrisUIAction tetris_ui_1v1(struct Tetris* p1, struct Tetris* p2) {
       }
     }
 
-    // Automatic drop logic
     if (!paused) {
       Uint32 now = SDL_GetTicks();
       float lvl1 = (float)tetris_get_level(p1);
@@ -149,7 +144,6 @@ TetrisUIAction tetris_ui_1v1(struct Tetris* p1, struct Tetris* p2) {
       }
     }
 
-    // Rendering
     SDL_SetRenderDrawColor(renderer, 30, 30, 30, 255);
     SDL_RenderClear(renderer);
 
@@ -179,10 +173,15 @@ TetrisUIAction tetris_ui_1v1(struct Tetris* p1, struct Tetris* p2) {
     SDL_RenderPresent(renderer);
   }
 
-  // Cleanup
-  if (audio_device) SDL_CloseAudioDevice(audio_device);
-  if (wav_buffer) SDL_FreeWAV(wav_buffer);
-  if (pause_button_texture) SDL_DestroyTexture(pause_button_texture);
+  if (audio_device) {
+    SDL_CloseAudioDevice(audio_device);
+  }
+  if (wav_buffer) {
+    SDL_FreeWAV(wav_buffer);
+  }
+  if (pause_button_texture) {
+    SDL_DestroyTexture(pause_button_texture);
+  }
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
 

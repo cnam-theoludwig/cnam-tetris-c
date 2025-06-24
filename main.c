@@ -57,5 +57,5 @@ int main() {
   IMG_Quit();
   TTF_Quit();
   SDL_Quit();
-  return 0;
+  return EXIT_SUCCESS;
 }

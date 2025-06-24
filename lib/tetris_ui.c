@@ -171,8 +171,12 @@ void tetris_ui_render_pause_menu(SDL_Renderer* renderer, struct Tetris* tetris) 
   TTF_Font* item_font = TTF_OpenFont("assets/font.ttf", 36);
   if (!title_font || !item_font) {
     fprintf(stderr, "Failed to load font for pause menu: %s\n", TTF_GetError());
-    if (title_font) TTF_CloseFont(title_font);
-    if (item_font) TTF_CloseFont(item_font);
+    if (title_font) {
+      TTF_CloseFont(title_font);
+    }
+    if (item_font) {
+      TTF_CloseFont(item_font);
+    }
     return;
   }
 
