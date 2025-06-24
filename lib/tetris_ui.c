@@ -43,7 +43,7 @@ void tetris_ui_render_grid(SDL_Renderer* renderer, struct Tetris* tetris) {
         case TETROMINO_S:
           SDL_SetRenderDrawColor(renderer, 0, 150, 0, 255);
           break;
-       case TETROMINO_GARBAGE:
+        case TETROMINO_GARBAGE:
           SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
           break;
         default:
