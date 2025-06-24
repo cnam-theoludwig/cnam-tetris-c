@@ -54,8 +54,10 @@ int main() {
       struct Tetris* p1 = tetris_init();
       struct Tetris* p2 = tetris_init();
       int quit_flag = 0;
+      SDL_Window* game_win = NULL;
+      SDL_Renderer* game_ren = NULL;
       while (true) {
-        TetrisUIAction act = tetris_ui_1v1(p1, p2);
+        TetrisUIAction act = tetris_ui_1v1(p1, p2, &game_win, &game_ren);
         if (act == UI_ACTION_RESTART) {
           tetris_free(p1);
           tetris_free(p2);
@@ -64,11 +66,19 @@ int main() {
         } else if (act == UI_ACTION_QUIT) {
           tetris_free(p1);
           tetris_free(p2);
+          if (game_ren) SDL_DestroyRenderer(game_ren);
+          if (game_win) SDL_DestroyWindow(game_win);
+          game_ren = NULL;
+          game_win = NULL;
           quit_flag = 1;
           break;
         } else if (act == UI_ACTION_CONTINUE) {
           tetris_free(p1);
           tetris_free(p2);
+          if (game_ren) SDL_DestroyRenderer(game_ren);
+          if (game_win) SDL_DestroyWindow(game_win);
+          game_ren = NULL;
+          game_win = NULL;
           break;
         }
       }
