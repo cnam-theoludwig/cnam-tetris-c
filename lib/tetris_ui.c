@@ -409,7 +409,7 @@ TetrisUIAction tetris_ui(struct Tetris* tetris) {
                   running = false;
                   break;
                 case PAUSE_MENU_MAIN_MENU:
-                  action_result = UI_ACTION_QUIT;
+                  action_result = UI_ACTION_CONTINUE;
                   running = false;
                   break;
                 default:
