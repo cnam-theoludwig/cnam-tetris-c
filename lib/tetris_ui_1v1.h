@@ -3,7 +3,7 @@
 
 #include "tetris_struct.h"
 #include "tetris_ui.h"
-
+#include "tetris_1v1.h"
 // Prototype de la fonction utilitaire définie dans tetris_ui.c
 SDL_Texture* load_texture_from_file(const char* path, SDL_Renderer* renderer);
 

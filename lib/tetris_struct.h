@@ -19,6 +19,7 @@
 #define TETROMINO_J 'J'
 #define TETROMINO_Z 'Z'
 #define TETROMINO_S 'S'
+#define TETROMINO_GARBAGE 'X'
 
 #define SCORE_SINGLE 40
 #define SCORE_DOUBLE 100

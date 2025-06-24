@@ -9,5 +9,6 @@
 #include "lib/tetris_ui.h"
 #include "lib/tetris_ui_1v1.h"
 #include "lib/utils.h"
+#include "lib/tetris_1v1.h"
 
 #endif
