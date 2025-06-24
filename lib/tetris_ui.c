@@ -50,6 +50,7 @@ void tetris_ui_render_grid(SDL_Renderer* renderer, struct Tetris* tetris) {
           SDL_SetRenderDrawColor(renderer, 15, 15, 15, 255);
           break;
       }
+
       SDL_RenderFillRect(renderer, &rect);
       SDL_SetRenderDrawColor(renderer, 40, 40, 40, 255);
       SDL_RenderDrawRect(renderer, &rect);
