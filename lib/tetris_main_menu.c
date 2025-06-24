@@ -115,8 +115,16 @@ GameMode run_tetris_main_menu(SDL_Window** window, SDL_Renderer** renderer) {
       SDL_RenderFillRect(*renderer, &btn_rects[btn]);
     }
     SDL_SetRenderDrawColor(*renderer, highlight.r, highlight.g, highlight.b, 255);
-    int sel_idx = (selected == MODE_SOLO) ? 0 : (selected == MODE_1V1) ? 1
-                                                                       : 2;
+
+    int sel_idx = 0;
+    if (selected == MODE_SOLO) {
+      sel_idx = 0;
+    } else if (selected == MODE_1V1) {
+      sel_idx = 1;
+    } else if (selected == MODE_EXIT) {
+      sel_idx = 2;
+    }
+
     for (int i = 0; i < 3; ++i) {
       SDL_Rect border = {btn_rects[sel_idx].x + i, btn_rects[sel_idx].y + i, btn_rects[sel_idx].w - 2 * i, btn_rects[sel_idx].h - 2 * i};
       SDL_RenderDrawRect(*renderer, &border);
