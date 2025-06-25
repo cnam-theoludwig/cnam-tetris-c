@@ -97,10 +97,7 @@ TetrisUIAction tetris_ui_vs_ai(struct Tetris* human, struct Tetris* ia, SDL_Wind
     window = *window_in;
     renderer = *renderer_in;
   } else {
-    window = SDL_CreateWindow("Tetris vs IA",
-                              SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                              TETRIS_WINDOW_WIDTH * 2 + 100, TETRIS_WINDOW_HEIGHT,
-                              SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow("Tetris vs IA", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, TETRIS_WINDOW_WIDTH * 2 + 100, TETRIS_WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
     if (!window) return UI_ACTION_QUIT;
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (!renderer) {

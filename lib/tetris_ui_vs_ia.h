@@ -5,9 +5,6 @@
 #include "tetris_struct.h"
 #include "tetris_ui.h"
 
-TetrisUIAction tetris_ui_vs_ai(struct Tetris* human,
-                               struct Tetris* ia,
-                               SDL_Window** window,
-                               SDL_Renderer** renderer);
+TetrisUIAction tetris_ui_vs_ai(struct Tetris* human, struct Tetris* ia, SDL_Window** window, SDL_Renderer** renderer);
 
 #endif
