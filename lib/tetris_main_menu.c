@@ -46,10 +46,13 @@ GameMode run_tetris_main_menu(SDL_Window** window, SDL_Renderer** renderer) {
   int start_y = (WINDOW_H - total_height) / 2 + 60;
 
   SDL_Rect btn_rects[BUTTON_COUNT];
-  btn_rects[0] = (SDL_Rect){(WINDOW_W - BUTTON_W) / 2, start_y, BUTTON_W, BUTTON_H};
-  btn_rects[1] = (SDL_Rect){(WINDOW_W - BUTTON_W) / 2, start_y + BUTTON_H + spacing, BUTTON_W, BUTTON_H};
-  btn_rects[2] = (SDL_Rect){(WINDOW_W - BUTTON_W) / 2, start_y + 2.5 * BUTTON_H + spacing, BUTTON_W, BUTTON_H};
-  btn_rects[3] = (SDL_Rect){(WINDOW_W - BUTTON_W) / 2, start_y + 3 * (BUTTON_H + spacing), BUTTON_W, BUTTON_H};
+  for (int i = 0; i < BUTTON_COUNT; ++i) {
+    btn_rects[i] = (SDL_Rect){
+        (WINDOW_W - BUTTON_W) / 2,
+        start_y + i * (BUTTON_H + spacing),
+        BUTTON_W,
+        BUTTON_H};
+  }
 
   SDL_Texture* txtTitle = renderText(*renderer, title_font, "TETRIS");
   SDL_Texture* btn_textures[BUTTON_COUNT];
