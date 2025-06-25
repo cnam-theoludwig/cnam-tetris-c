@@ -10,5 +10,6 @@
 #include "lib/tetris_ui.h"
 #include "lib/tetris_ui_1v1.h"
 #include "lib/utils.h"
+#include "lib/tetris_ui_vs_ia.h"
 
 #endif
