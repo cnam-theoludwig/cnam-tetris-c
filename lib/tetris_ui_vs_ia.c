@@ -71,8 +71,7 @@ static void ia_compute_best_move(struct Tetris* ia, int* best_rot, int* best_col
         tetris_last_tetromino_step_left(copy);
         dx++;
       }
-      while (tetris_last_tetromino_step_down(copy))
-        ;
+      while (tetris_last_tetromino_step_down(copy));
       size_t lines = tetris_destroy_line(copy);
       int holes = count_holes(copy);
       int agg = aggregate_height(copy);
@@ -162,8 +161,7 @@ TetrisUIAction tetris_ui_vs_ai(struct Tetris* human, struct Tetris* ia, SDL_Wind
               tetris_last_tetromino_step_rotate_left(human);
               break;
             case SDLK_SPACE:
-              while (tetris_last_tetromino_step_down(human))
-                ;
+              while (tetris_last_tetromino_step_down(human));
               tetris_1v1_handle_lines_and_attack(human, ia);
               if (!tetris_add_tetromino(human)) human->game_over = true;
               ia_new_piece = true;
@@ -237,8 +235,7 @@ TetrisUIAction tetris_ui_vs_ai(struct Tetris* human, struct Tetris* ia, SDL_Wind
         } else if ((int)ia->last_pivot_x > ia_target_col) {
           tetris_last_tetromino_step_left(ia);
         } else {
-          while (tetris_last_tetromino_step_down(ia))
-            ;
+          while (tetris_last_tetromino_step_down(ia));
           tetris_1v1_handle_lines_and_attack(ia, human);
           if (!tetris_add_tetromino(ia)) ia->game_over = true;
           ia_new_piece = true;
