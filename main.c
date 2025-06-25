@@ -85,35 +85,34 @@ int main() {
       if (quit_flag) {
         break;
       }
-    }
-    else if (mode == MODE_AI) {
-    struct Tetris* human = tetris_init();
-    struct Tetris* ia    = tetris_init();
-    SDL_Window* w = NULL;
-    SDL_Renderer* r = NULL;
-    int quit_flag = 0;
-    while (true) {
+    } else if (mode == MODE_AI) {
+      struct Tetris* human = tetris_init();
+      struct Tetris* ia = tetris_init();
+      SDL_Window* w = NULL;
+      SDL_Renderer* r = NULL;
+      int quit_flag = 0;
+      while (true) {
         TetrisUIAction act = tetris_ui_vs_ai(human, ia, &w, &r);
         if (act == UI_ACTION_RESTART) {
-            tetris_free(human);
-            tetris_free(ia);
-            human = tetris_init();
-            ia    = tetris_init();
+          tetris_free(human);
+          tetris_free(ia);
+          human = tetris_init();
+          ia = tetris_init();
         } else if (act == UI_ACTION_QUIT) {
-            tetris_free(human);
-            tetris_free(ia);
-            quit_flag = 1;
-            break;
+          tetris_free(human);
+          tetris_free(ia);
+          quit_flag = 1;
+          break;
         } else if (act == UI_ACTION_CONTINUE) {
-            tetris_free(human);
-            tetris_free(ia);
-            break;
+          tetris_free(human);
+          tetris_free(ia);
+          break;
         }
+      }
+      if (r) SDL_DestroyRenderer(r);
+      if (w) SDL_DestroyWindow(w);
+      if (quit_flag) break;
     }
-    if (r) SDL_DestroyRenderer(r);
-    if (w) SDL_DestroyWindow(w);
-    if (quit_flag) break;
-  }
 
     menu_win = NULL;
     menu_ren = NULL;

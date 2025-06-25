@@ -86,7 +86,7 @@ GameMode run_tetris_main_menu(SDL_Window** window, SDL_Renderer** renderer) {
       }
     }
     if (ev.type == SDL_KEYDOWN) {
-      static const GameMode menu_modes[BUTTON_COUNT] = {MODE_SOLO, MODE_1V1,MODE_AI, MODE_EXIT};
+      static const GameMode menu_modes[BUTTON_COUNT] = {MODE_SOLO, MODE_1V1, MODE_AI, MODE_EXIT};
       size_t index = 0;
       for (size_t i = 0; i < BUTTON_COUNT; ++i) {
         if (menu_modes[i] == selected) {
